@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: #{imagen_app_name}#
+  cloud:
+    kubernetes:
+      config:
+        enabled: true
+        namespace: #{namespace}#
+        sources:
+         - name: #{imagen_app_name}#
+      reload:
+        enabled: false

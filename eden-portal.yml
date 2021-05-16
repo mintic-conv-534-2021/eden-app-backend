@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: toures-balon-back
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: toures-balon-back
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: toures-balon-back
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: toures-balon-back
+        image: arquitectonicos3/ingsoft:1.3
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: toures-balon-back
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+  selector:
+    app: toures-balon-back
