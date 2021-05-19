@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface OrganizacionService {
 
-    Organizacion getOrganizacionById(long productoId);
+    Organizacion getOrganizacionById(long organizacionId);
 
     List<Organizacion> getAllOrganizacion();
 
