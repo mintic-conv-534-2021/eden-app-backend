@@ -30,11 +30,7 @@ public class Modulo {
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JoinColumn(name = "ID_CATALOGO")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "modulo")
     private List<Catalogo> catalogos;
 
 }

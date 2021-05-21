@@ -42,11 +42,11 @@ public class Catalogo {
     private String imagen;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_ORGANIZACION")
+    @JoinColumn(name = "idOrganizacion", referencedColumnName = "ID_ORGANIZACION")
     private Organizacion organizacion;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_MODULO")
+    @JoinColumn(name = "idModulo", referencedColumnName = "ID_MODULO")
     private Modulo modulo;
 
 }

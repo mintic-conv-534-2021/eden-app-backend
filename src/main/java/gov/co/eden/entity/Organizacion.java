@@ -42,18 +42,10 @@ public class Organizacion {
     @Column(name = "EMAIL")
     private String email;
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JoinColumn(name = "ID_PRODUCTO")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organizacion")
     private List<Producto> productos;
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JoinColumn(name = "ID_CATALOGO")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organizacion")
     private List<Catalogo> catalogos;
 
 }

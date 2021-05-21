@@ -45,7 +45,7 @@ public class Producto {
     private String imagen;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_ORGANIZACION")
+    @JoinColumn(name = "idOrganizacion", referencedColumnName = "ID_ORGANIZACION")
     private Organizacion organizacion;
 
 }
