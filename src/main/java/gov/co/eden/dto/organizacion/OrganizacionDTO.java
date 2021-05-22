@@ -31,6 +31,7 @@ public class OrganizacionDTO {
     private String rm;
     private String rnt;
     private String rut;
+    private RedSocialDTO redSocialDTO;
     private List<Long> productosIdList;
     private Long catalogoOrganizacionId;
 }

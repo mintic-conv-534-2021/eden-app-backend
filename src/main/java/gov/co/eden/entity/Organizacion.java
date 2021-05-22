@@ -23,7 +23,7 @@ public class Organizacion {
     private long idOrganizacion;
 
     @JoinColumn(name = "ID_RED_SOCIAL", referencedColumnName = "ID_RED_SOCIAL")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private RedSocial redSocial;
 
     @Basic

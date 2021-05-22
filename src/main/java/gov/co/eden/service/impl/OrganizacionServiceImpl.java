@@ -5,6 +5,7 @@ import gov.co.eden.entity.CatalogoOrganizacion;
 import gov.co.eden.entity.CatalogoProducto;
 import gov.co.eden.entity.Organizacion;
 import gov.co.eden.entity.Producto;
+import gov.co.eden.entity.RedSocial;
 import gov.co.eden.exception.NotFoundException;
 import gov.co.eden.repository.CatalogoOrganizacionRepository;
 import gov.co.eden.repository.OrganizacionRepository;
@@ -54,6 +55,7 @@ public class OrganizacionServiceImpl implements OrganizacionService {
         CatalogoOrganizacion catalogoOrganizacion = catalogoOrganizacionRepository.findById(request.getCatalogoOrganizacionId()).
                 orElseThrow(() -> new NotFoundException("Catalogo de organizacion con id "
                         + request.getCatalogoOrganizacionId() + " no existe en la BD"));
+        organizacion.setRedSocial(modelMapper.map(request.getRedSocialDTO(), RedSocial.class));
         organizacion.setCatalogoOrganizacion(catalogoOrganizacion);
         organizacionRepository.save(organizacion);
     }
