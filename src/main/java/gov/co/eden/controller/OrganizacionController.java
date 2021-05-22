@@ -1,14 +1,11 @@
 package gov.co.eden.controller;
 
-import gov.co.eden.dto.catalogo.CatalogoDTO;
-import gov.co.eden.dto.catalogo.CatalogoListResponse;
-import gov.co.eden.dto.catalogo.CatalogoResponse;
+import gov.co.eden.dto.catalogoproducto.CatalogoProductoListResponse;
+import gov.co.eden.dto.catalogoproducto.CatalogoProductoResponse;
 import gov.co.eden.dto.organizacion.OrganizacionDTO;
 import gov.co.eden.dto.organizacion.OrganizacionListResponse;
 import gov.co.eden.dto.organizacion.OrganizacionResponse;
-import gov.co.eden.entity.Catalogo;
 import gov.co.eden.entity.Organizacion;
-import gov.co.eden.service.CatalogoService;
 import gov.co.eden.service.OrganizacionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -48,7 +45,7 @@ public class OrganizacionController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Obtiene el organizacion de acuerdo al id",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CatalogoResponse.class))}),
+                            schema = @Schema(implementation = CatalogoProductoResponse.class))}),
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +65,7 @@ public class OrganizacionController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Obtiene lista de organizaciones",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CatalogoListResponse.class))}),
+                            schema = @Schema(implementation = CatalogoProductoListResponse.class))}),
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -84,11 +81,11 @@ public class OrganizacionController {
                 .ok(response);
     }
 
-    @Operation(summary = "Charge the organizacion")
+    @Operation(summary = "Carga los datos de la organizacion")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Organizacion creation success"),
-            @ApiResponse(responseCode = "400", description = "Organizacion bad request"),
-            @ApiResponse(responseCode = "500", description = "Organizacion internal service error")
+            @ApiResponse(responseCode = "201", description = "Organizacion creada satisfactoriamente"),
+            @ApiResponse(responseCode = "400", description = "Error en el request de organizacion"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrganizacion(@RequestBody OrganizacionDTO request) {
@@ -98,11 +95,11 @@ public class OrganizacionController {
                 .build();
     }
 
-    @Operation(summary = "Update the organizacion")
+    @Operation(summary = "Actualiza los datos de la organizacion")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Organizacion update success"),
-            @ApiResponse(responseCode = "400", description = "Organizacion update bad request"),
-            @ApiResponse(responseCode = "500", description = "Organizacion Internal service error")
+            @ApiResponse(responseCode = "201", description = "Organizacion actualizada satisfactoriamente"),
+            @ApiResponse(responseCode = "400", description = "Error en el request de organizacion"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrganizacion(@RequestBody OrganizacionDTO request) {

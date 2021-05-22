@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import java.util.List;
 
 @Data
@@ -24,7 +26,11 @@ public class OrganizacionDTO {
     private String direccion;
     private String email;
     private Boolean activo;
-    private String imagen;
-    private List<Long> productosId;
-    private List<Long> catalogoId;
+    private String urlLogo;
+    private String urlBanner;
+    private String rm;
+    private String rnt;
+    private String rut;
+    private List<Long> productosIdList;
+    private Long catalogoOrganizacionId;
 }

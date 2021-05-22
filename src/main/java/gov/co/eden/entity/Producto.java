@@ -30,10 +30,6 @@ public class Producto {
     private String descripcion;
 
     @Basic
-    @Column(name = "CANTIDAD")
-    private int cantidad;
-
-    @Basic
     @Column(name = "PRECIO")
     private double precio;
 
@@ -47,5 +43,9 @@ public class Producto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idOrganizacion", referencedColumnName = "ID_ORGANIZACION")
     private Organizacion organizacion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idCatalogoProducto", referencedColumnName = "ID_CATALOGO_PRODUCTO")
+    private CatalogoProducto catalogoProducto;
 
 }

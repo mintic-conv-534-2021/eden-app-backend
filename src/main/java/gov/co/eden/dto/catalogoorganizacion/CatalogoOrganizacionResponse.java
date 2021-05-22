@@ -1,14 +1,11 @@
-package gov.co.eden.dto.catalogo;
+package gov.co.eden.dto.catalogoorganizacion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import gov.co.eden.dto.modulo.ModuloDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -16,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CatalogoListResponse {
+public class CatalogoOrganizacionResponse {
 
-    private List<CatalogoDTO> catalogoDTOList;
+    private CatalogoOrganizacionDTO catalogoOrganizacionDTO;
 
 }

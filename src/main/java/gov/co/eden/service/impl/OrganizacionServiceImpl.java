@@ -1,11 +1,17 @@
 package gov.co.eden.service.impl;
 
 import gov.co.eden.dto.organizacion.OrganizacionDTO;
+import gov.co.eden.entity.CatalogoOrganizacion;
+import gov.co.eden.entity.CatalogoProducto;
 import gov.co.eden.entity.Organizacion;
+import gov.co.eden.entity.Producto;
 import gov.co.eden.exception.NotFoundException;
+import gov.co.eden.repository.CatalogoOrganizacionRepository;
 import gov.co.eden.repository.OrganizacionRepository;
 import gov.co.eden.service.OrganizacionService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +24,12 @@ public class OrganizacionServiceImpl implements OrganizacionService {
 
     @Autowired
     private OrganizacionRepository organizacionRepository;
+
+    @Autowired
+    private CatalogoOrganizacionRepository catalogoOrganizacionRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public Organizacion getOrganizacionById(long organizacionId) {
@@ -38,11 +50,27 @@ public class OrganizacionServiceImpl implements OrganizacionService {
 
     @Override
     public void createOrganizacion(OrganizacionDTO request) {
-
+        Organizacion organizacion = modelMapper.map(request, Organizacion.class);
+        CatalogoOrganizacion catalogoOrganizacion = catalogoOrganizacionRepository.findById(request.getCatalogoOrganizacionId()).
+                orElseThrow(() -> new NotFoundException("Catalogo de organizacion con id "
+                        + request.getCatalogoOrganizacionId() + " no existe en la BD"));
+        organizacion.setCatalogoOrganizacion(catalogoOrganizacion);
+        organizacionRepository.save(organizacion);
     }
 
     @Override
     public void updateOrganizacion(OrganizacionDTO request) {
-
+        Organizacion organizacion = organizacionRepository.findById(request.getOrganizacionId()).
+                orElseThrow(() -> new NotFoundException("Organizacion con id "
+                        + request.getOrganizacionId() + " no existe en la BD"));;
+        merge(request, organizacion);
+        organizacionRepository.save(organizacion);
     }
+
+    public static <T> void merge(T source, T target) {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.map(source, target);
+    }
+
 }

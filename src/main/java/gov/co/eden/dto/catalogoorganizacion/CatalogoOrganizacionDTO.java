@@ -1,4 +1,4 @@
-package gov.co.eden.dto.producto;
+package gov.co.eden.dto.catalogoorganizacion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,13 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProductoDTO {
-    private Long productoId;
+public class CatalogoOrganizacionDTO {
+
+    private Long catalogoOrganizacionId;
     private String nombre;
     private String descripcion;
-    private Double precio;
-    private Boolean estado;
-    private String imagen;
-    private Long organizacionId;
-    private Long catalogoProductoId;
 }

@@ -22,6 +22,10 @@ public class Organizacion {
     @SequenceGenerator(name = "ORGANIZACION_GENERATOR", sequenceName = "ORGANIZACION_SEQUENCE", allocationSize = 1)
     private long idOrganizacion;
 
+    @JoinColumn(name = "ID_RED_SOCIAL", referencedColumnName = "ID_RED_SOCIAL")
+    @OneToOne(fetch = FetchType.LAZY)
+    private RedSocial redSocial;
+
     @Basic
     @Column(name = "NOMBRE")
     private String nombre;
@@ -39,13 +43,35 @@ public class Organizacion {
     private String direccion;
 
     @Basic
+    @Column(name = "RM")
+    private String rm;
+
+    @Basic
+    @Column(name = "RNT")
+    private String rnt;
+
+    @Basic
+    @Column(name = "RUT")
+    private String rut;
+
+    @Basic
+    @Column(name = "activo")
+    private Boolean activo;
+
+    @Basic
     @Column(name = "EMAIL")
     private String email;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organizacion")
-    private List<Producto> productos;
+    @Basic
+    @Column(name = "URL_LOGO")
+    private String urlLogo;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organizacion")
-    private List<Catalogo> catalogos;
+    @Basic
+    @Column(name = "URL_BANNER")
+    private String urlBanner;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idCatalogoOrganizacion", referencedColumnName = "ID_CATALOGO_ORGANIZACION")
+    private CatalogoOrganizacion catalogoOrganizacion;
 
 }
