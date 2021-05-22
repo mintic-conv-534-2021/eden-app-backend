@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface CatalogoOrganizacionService {
 
-    CatalogoOrganizacion getModuloById(long moduloId);
+    CatalogoOrganizacion getCatalogoOrganizacionById(long moduloId);
 
-    List<CatalogoOrganizacion> getAllModulo();
+    List<CatalogoOrganizacion> getAllCatalogoOrganizacion();
 
-    void createModulo(CatalogoOrganizacion catalogoOrganizacion);
+    void createCatalogoOrganizacion(CatalogoOrganizacion catalogoOrganizacion);
 
-    void updateModulo(CatalogoOrganizacion catalogoOrganizacion);
+    void updateCatalogoOrganizacion(CatalogoOrganizacion catalogoOrganizacion);
 }

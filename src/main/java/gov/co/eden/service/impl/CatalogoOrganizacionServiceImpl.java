@@ -19,7 +19,7 @@ public class CatalogoOrganizacionServiceImpl implements CatalogoOrganizacionServ
     private CatalogoOrganizacionRepository catalogoOrganizacionRepository;
 
     @Override
-    public CatalogoOrganizacion getModuloById(long moduloId) {
+    public CatalogoOrganizacion getCatalogoOrganizacionById(long moduloId) {
         Optional<CatalogoOrganizacion> modulo = catalogoOrganizacionRepository.findById(moduloId);
         if (!modulo.isPresent())
             throw new NotFoundException("No catalogo de organizacion found on database for id: " + moduloId);
@@ -27,7 +27,7 @@ public class CatalogoOrganizacionServiceImpl implements CatalogoOrganizacionServ
     }
 
     @Override
-    public List<CatalogoOrganizacion> getAllModulo() {
+    public List<CatalogoOrganizacion> getAllCatalogoOrganizacion() {
         List<CatalogoOrganizacion> entities = catalogoOrganizacionRepository.findAll();
         log.info("Found {} of modulo", entities.size());
         if (entities.isEmpty())
@@ -36,12 +36,12 @@ public class CatalogoOrganizacionServiceImpl implements CatalogoOrganizacionServ
     }
 
     @Override
-    public void createModulo(CatalogoOrganizacion catalogoOrganizacion) {
+    public void createCatalogoOrganizacion(CatalogoOrganizacion catalogoOrganizacion) {
         catalogoOrganizacionRepository.save(catalogoOrganizacion);
     }
 
     @Override
-    public void updateModulo(CatalogoOrganizacion catalogoOrganizacion) {
+    public void updateCatalogoOrganizacion(CatalogoOrganizacion catalogoOrganizacion) {
         catalogoOrganizacionRepository.save(catalogoOrganizacion);
     }
 }

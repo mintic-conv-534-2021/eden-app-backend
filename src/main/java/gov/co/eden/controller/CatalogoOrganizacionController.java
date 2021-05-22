@@ -50,7 +50,7 @@ public class CatalogoOrganizacionController {
     })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CatalogoOrganizacionResponse> getCatalogoOrganizacion(@PathVariable("id") long id) {
-        CatalogoOrganizacion catalogoOrganizacion = catalogoOrganizacionService.getModuloById(id);
+        CatalogoOrganizacion catalogoOrganizacion = catalogoOrganizacionService.getCatalogoOrganizacionById(id);
         CatalogoOrganizacionDTO catalogoOrganizacionDTO = modelMapper.map(catalogoOrganizacion, CatalogoOrganizacionDTO.class);
         CatalogoOrganizacionResponse response = CatalogoOrganizacionResponse
                 .builder()
@@ -70,7 +70,7 @@ public class CatalogoOrganizacionController {
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CatalogoOrganizacionListResponse> getCatalogoOrganizacionList() {
-        List<CatalogoOrganizacion> catalogoOrganizacionList = catalogoOrganizacionService.getAllModulo();
+        List<CatalogoOrganizacion> catalogoOrganizacionList = catalogoOrganizacionService.getAllCatalogoOrganizacion();
         List<CatalogoOrganizacionDTO> catalogoOrganizacionDTOList = convertToCatalogoOrganizacionDTO(catalogoOrganizacionList);
         CatalogoOrganizacionListResponse response = CatalogoOrganizacionListResponse
                 .builder()
@@ -89,7 +89,7 @@ public class CatalogoOrganizacionController {
     })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createCatalogoOrganizacion(@RequestBody CatalogoOrganizacionDTO request) {
-        catalogoOrganizacionService.createModulo(modelMapper.map(request, CatalogoOrganizacion.class));
+        catalogoOrganizacionService.createCatalogoOrganizacion(modelMapper.map(request, CatalogoOrganizacion.class));
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
@@ -103,7 +103,7 @@ public class CatalogoOrganizacionController {
     })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateCatalogoOrganizacion(@RequestBody CatalogoOrganizacionDTO request) {
-        catalogoOrganizacionService.updateModulo(modelMapper.map(request, CatalogoOrganizacion.class));
+        catalogoOrganizacionService.updateCatalogoOrganizacion(modelMapper.map(request, CatalogoOrganizacion.class));
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();
