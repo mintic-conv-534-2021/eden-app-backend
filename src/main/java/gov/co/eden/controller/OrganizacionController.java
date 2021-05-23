@@ -1,7 +1,5 @@
 package gov.co.eden.controller;
 
-import gov.co.eden.dto.catalogoproducto.CatalogoProductoListResponse;
-import gov.co.eden.dto.catalogoproducto.CatalogoProductoResponse;
 import gov.co.eden.dto.organizacion.OrganizacionDTO;
 import gov.co.eden.dto.organizacion.OrganizacionListResponse;
 import gov.co.eden.dto.organizacion.OrganizacionResponse;
@@ -24,10 +22,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -45,13 +46,13 @@ public class OrganizacionController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Obtiene el organizacion de acuerdo al id",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CatalogoProductoResponse.class))}),
+                            schema = @Schema(implementation = OrganizacionResponse.class))}),
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrganizacionResponse> getOrganizacion(@PathVariable("id") long id) {
         Organizacion organizacion = organizacionService.getOrganizacionById(id);
-        OrganizacionDTO organizacionDTO = modelMapper.map(organizacion,OrganizacionDTO.class);
+        OrganizacionDTO organizacionDTO = modelMapper.map(organizacion, OrganizacionDTO.class);
         OrganizacionResponse response = OrganizacionResponse
                 .builder()
                 .organizacionDTO(organizacionDTO)
@@ -65,7 +66,7 @@ public class OrganizacionController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Obtiene lista de organizaciones",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CatalogoProductoListResponse.class))}),
+                            schema = @Schema(implementation = OrganizacionListResponse.class))}),
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -75,6 +76,47 @@ public class OrganizacionController {
         OrganizacionListResponse response = OrganizacionListResponse
                 .builder()
                 .organizacionDTOList(catalogoDTOList)
+                .build();
+
+        return ResponseEntity
+                .ok(response);
+    }
+
+    @Operation(summary = "Obtiene lista de organizaciones por id categoria de organizacion")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Obtiene lista de organizaciones id por categoria de organizacion",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = OrganizacionListResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Error interno del sistema")
+    })
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrganizacionListResponse> getOrganizacionListByCatalogoOrganizacionId
+            (@RequestParam(value = "catalogoOrganizacionId") Long catalogoOrganizacionId) {
+        List<Organizacion> catalogoList = organizacionService.getOrganizacionByCatalogoOrganizacionId(catalogoOrganizacionId);
+        List<OrganizacionDTO> catalogoDTOList = convertToOrganizacion(catalogoList);
+        OrganizacionListResponse response = OrganizacionListResponse
+                .builder()
+                .organizacionDTOList(catalogoDTOList)
+                .build();
+
+        return ResponseEntity
+                .ok(response);
+    }
+
+    @Operation(summary = "Obtiene mapa de organizaciones por catalogo de organizacion")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Obtiene mapa de organizaciones or catalogo de organizacion",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = OrganizacionListResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Error interno del sistema")
+    })
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrganizacionListResponse> getOrganizacionListByCatalogoProducto() {
+        Map<Long, List<Organizacion>> catalogoList = organizacionService.findOrganizationByCatalogoOrganization();
+        Map<Long, List<OrganizacionDTO>> catalogoDTOList = convertToOrganizacionMap(catalogoList);
+        OrganizacionListResponse response = OrganizacionListResponse
+                .builder()
+                .organizationListByCatalogoOrganizacion(catalogoDTOList)
                 .build();
 
         return ResponseEntity
@@ -116,6 +158,19 @@ public class OrganizacionController {
             responseList.add(result);
         }
         return responseList;
+    }
+
+    private Map<Long, List<OrganizacionDTO>> convertToOrganizacionMap(Map<Long, List<Organizacion>> organizacionList) {
+        Map<Long, List<OrganizacionDTO>> dtos2 = new HashMap<>();
+        for (Map.Entry<Long, List<Organizacion>> mapByDate : organizacionList.entrySet()) {
+            List<OrganizacionDTO> organizacionDTOList = new ArrayList<>();
+            for (Organizacion entity : mapByDate.getValue()) {
+                OrganizacionDTO dto = modelMapper.map(entity, OrganizacionDTO.class);
+                organizacionDTOList.add(dto);
+            }
+            dtos2.put(mapByDate.getKey(), organizacionDTOList);
+        }
+        return dtos2;
     }
 
 }

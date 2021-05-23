@@ -2,9 +2,12 @@ package gov.co.eden.controller;
 
 import gov.co.eden.dto.catalogoproducto.CatalogoProductoListResponse;
 import gov.co.eden.dto.catalogoproducto.CatalogoProductoResponse;
+import gov.co.eden.dto.organizacion.OrganizacionDTO;
+import gov.co.eden.dto.organizacion.OrganizacionListResponse;
 import gov.co.eden.dto.producto.ProductoDTO;
 import gov.co.eden.dto.producto.ProductoListResponse;
 import gov.co.eden.dto.producto.ProductoResponse;
+import gov.co.eden.entity.Organizacion;
 import gov.co.eden.entity.Producto;
 import gov.co.eden.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -45,7 +49,7 @@ public class ProductoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Obtiene el producto de acuerdo al id",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CatalogoProductoResponse.class))}),
+                            schema = @Schema(implementation = ProductoResponse.class))}),
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,12 +69,33 @@ public class ProductoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Obtiene lista de productos",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CatalogoProductoListResponse.class))}),
+                            schema = @Schema(implementation = ProductoListResponse.class))}),
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductoListResponse> getProductoList() {
         List<Producto> productoList = productoService.getAllProductos();
+        List<ProductoDTO> productoDTOList = convertToProductos(productoList);
+        ProductoListResponse response = ProductoListResponse
+                .builder()
+                .productoDTOList(productoDTOList)
+                .build();
+
+        return ResponseEntity
+                .ok(response);
+    }
+
+    @Operation(summary = "Obtiene lista de productos por id categoria de productos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Obtiene lista de productos por id categoria de productos",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ProductoListResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Error interno del sistema")
+    })
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductoListResponse> getProductoListByCatalogoProductoId
+            (@RequestParam(value = "catalogoProductoId") Long catalogoProductoId) {
+        List<Producto> productoList = productoService.getProductoByCatalogoProductoId(catalogoProductoId);
         List<ProductoDTO> productoDTOList = convertToProductos(productoList);
         ProductoListResponse response = ProductoListResponse
                 .builder()

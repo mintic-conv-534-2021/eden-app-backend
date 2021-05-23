@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -38,6 +40,14 @@ public class OrganizacionServiceImpl implements OrganizacionService {
         if (!modulo.isPresent())
             throw new NotFoundException("No organizacion found on database for id: " + organizacionId);
         return modulo.get();
+    }
+
+    @Override
+    public List<Organizacion> getOrganizacionByCatalogoOrganizacionId(Long catalogoOrganziacionId) {
+        List<Organizacion> entities = organizacionRepository.findAllByCatalogoOrganizacion_IdCatalogoOrganizacion(catalogoOrganziacionId);
+        if (entities.isEmpty())
+            throw new NotFoundException("No organizacion found on database");
+        return entities;
     }
 
     @Override
@@ -67,6 +77,12 @@ public class OrganizacionServiceImpl implements OrganizacionService {
                         + request.getOrganizacionId() + " no existe en la BD"));;
         merge(request, organizacion);
         organizacionRepository.save(organizacion);
+    }
+
+    @Override
+    public Map<Long, List<Organizacion>> findOrganizationByCatalogoOrganization(){
+        return organizacionRepository.findAll().stream().
+                collect(Collectors.groupingBy(x -> x.getCatalogoOrganizacion().getIdCatalogoOrganizacion()));
     }
 
     public static <T> void merge(T source, T target) {

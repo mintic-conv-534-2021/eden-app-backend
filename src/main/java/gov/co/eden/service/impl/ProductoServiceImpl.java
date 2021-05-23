@@ -1,11 +1,9 @@
 package gov.co.eden.service.impl;
 
-import gov.co.eden.dto.organizacion.RedSocialDTO;
 import gov.co.eden.dto.producto.ProductoDTO;
 import gov.co.eden.entity.CatalogoProducto;
 import gov.co.eden.entity.Organizacion;
 import gov.co.eden.entity.Producto;
-import gov.co.eden.entity.RedSocial;
 import gov.co.eden.exception.NotFoundException;
 import gov.co.eden.repository.CatalogoProductoRepository;
 import gov.co.eden.repository.OrganizacionRepository;
@@ -13,12 +11,10 @@ import gov.co.eden.repository.ProductoRepository;
 import gov.co.eden.service.ProductoService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +40,14 @@ public class ProductoServiceImpl implements ProductoService {
         if (!catalogo.isPresent())
             throw new NotFoundException("No product found on database for id: " + productoId);
         return catalogo.get();
+    }
+
+    @Override
+    public List<Producto> getProductoByCatalogoProductoId(Long catalogoProductoId) {
+        List<Producto> entities = productoRepository.findAllByCatalogoProducto_IdCatalogoProducto(catalogoProductoId);
+        if (entities.isEmpty())
+            throw new NotFoundException("No product found on database");
+        return entities;
     }
 
     @Override
@@ -74,7 +78,8 @@ public class ProductoServiceImpl implements ProductoService {
 
         Producto producto = productoRepository.findById(request.getProductoId()).
                 orElseThrow(() -> new NotFoundException("Producto con id "
-                        + request.getProductoId() + " no existe en la BD"));;
+                        + request.getProductoId() + " no existe en la BD"));
+        ;
         merge(request, producto);
         productoRepository.save(producto);
     }
