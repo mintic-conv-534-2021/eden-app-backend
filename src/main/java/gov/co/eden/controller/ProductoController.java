@@ -92,9 +92,9 @@ public class ProductoController {
                             schema = @Schema(implementation = ProductoListResponse.class))}),
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/catalogo-organizacion/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductoListResponse> getProductoListByCatalogoProductoId
-            (@RequestParam(value = "catalogoProductoId") Long catalogoProductoId) {
+            (@PathVariable(value = "id") Long catalogoProductoId) {
         List<Producto> productoList = productoService.getProductoByCatalogoProductoId(catalogoProductoId);
         List<ProductoDTO> productoDTOList = convertToProductos(productoList);
         ProductoListResponse response = ProductoListResponse

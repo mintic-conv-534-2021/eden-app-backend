@@ -89,9 +89,9 @@ public class OrganizacionController {
                             schema = @Schema(implementation = OrganizacionListResponse.class))}),
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/catalogo-organizacion/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrganizacionListResponse> getOrganizacionListByCatalogoOrganizacionId
-            (@RequestParam(value = "catalogoOrganizacionId") Long catalogoOrganizacionId) {
+            (@PathVariable(value = "id") Long catalogoOrganizacionId) {
         List<Organizacion> catalogoList = organizacionService.getOrganizacionByCatalogoOrganizacionId(catalogoOrganizacionId);
         List<OrganizacionDTO> catalogoDTOList = convertToOrganizacion(catalogoList);
         OrganizacionListResponse response = OrganizacionListResponse
@@ -110,7 +110,7 @@ public class OrganizacionController {
                             schema = @Schema(implementation = OrganizacionListResponse.class))}),
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/catalogo-organizacion", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrganizacionListResponse> getOrganizacionListByCatalogoProducto() {
         Map<Long, List<Organizacion>> catalogoList = organizacionService.findOrganizationByCatalogoOrganization();
         Map<Long, List<OrganizacionDTO>> catalogoDTOList = convertToOrganizacionMap(catalogoList);
