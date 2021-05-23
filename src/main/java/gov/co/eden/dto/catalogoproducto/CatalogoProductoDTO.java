@@ -17,5 +17,5 @@ public class CatalogoProductoDTO {
 
     private Long catalogoProductoId;
     private String nombre;
-    private Long categoriaOrganizacionId;
+    private Long catalogoOganizacionId;
 }

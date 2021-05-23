@@ -30,6 +30,10 @@ public class CatalogoOrganizacion {
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
+    @Basic
+    @Column(name = "URL_IMAGEN")
+    private String urlImagen;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "catalogoOrganizacion")
     private List<Organizacion> organizacionList;
 

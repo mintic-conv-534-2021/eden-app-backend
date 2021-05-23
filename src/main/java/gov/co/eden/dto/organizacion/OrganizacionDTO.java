@@ -28,9 +28,9 @@ public class OrganizacionDTO {
     private Boolean activo;
     private String urlLogo;
     private String urlBanner;
-    private String rm;
-    private String rnt;
-    private String rut;
+    private String urlRM;
+    private String urlRNT;
+    private String urlRUT;
     private RedSocialDTO redSocialDTO;
     private List<Long> productosIdList;
     private Long catalogoOrganizacionId;

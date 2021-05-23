@@ -43,16 +43,16 @@ public class Organizacion {
     private String direccion;
 
     @Basic
-    @Column(name = "RM")
-    private String rm;
+    @Column(name = "URL_RM")
+    private String urlRM;
 
     @Basic
-    @Column(name = "RNT")
-    private String rnt;
+    @Column(name = "URL_RNT")
+    private String urlRNT;
 
     @Basic
-    @Column(name = "RUT")
-    private String rut;
+    @Column(name = "URL_RUT")
+    private String urlRut;
 
     @Basic
     @Column(name = "activo")
