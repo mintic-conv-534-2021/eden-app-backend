@@ -1,0 +1,77 @@
+# Este flujo de trabajo construye la imagen del contenedor, la empuja en el repositorio
+# ECR y luego despliega en un clúster EKS previamente creado, usando los yaml en la
+# carpeta `manifests` and Kustomize, por cada push a la rama `master`.
+#
+# Para usar este flujo es necesario tener en cueenta:
+#
+# 1. Debe disponer de un clúster EKS previamente creado.
+# 2. Debe tener un repositorio de imagenes como ECR.
+# 3. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID`
+#    and `AWS_SECRET_ACCESS_KEY`.
+
+on:
+  push:
+    branches:
+      - feature/develop
+
+name: Despliegue en Amazon EKS
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-west-2
+      EKS_CLUSTER_NAME: eden-app-backend-poc
+      REPO_NAME: eden-app-repo-poc
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ env.REPO_NAME }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to EKS.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./app/.
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+    - name: Setup kubeconfig
+      id: setup-kubeconfig
+      run: |
+        aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
+    - name: Deploy k8s yaml
+      id: deploy-k8s-yaml
+      env:
+        K8S_YAML_DIR: ./manifests 
+        IMAGE_NAME: ${{ steps.build-image.outputs.image }}
+      run: |
+        # Setup kustomize
+        cd $K8S_YAML_DIR
+        curl -s -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+        chmod u+x ./kustomize
+        ./kustomize edit set image placeholder-image=$IMAGE_NAME
+        ./kustomize build . | kubectl apply -f -
+        # Verify deployment
+        kubectl rollout status deployment/aws-example-octodex
+        # List Public IP of cluster
+        kubectl get services -o wide
+        kubectl get ingress
