@@ -12,7 +12,7 @@
 on:
   push:
     branches:
-      - feature/develop
+      - feature/devops
 
 name: Despliegue en Amazon EKS
 
