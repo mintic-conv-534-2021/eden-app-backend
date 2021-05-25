@@ -77,7 +77,7 @@ jobs:
         ./kustomize edit set image placeholder-image=$IMAGE_NAME
         ./kustomize build . | kubectl apply -f -
         # Verify deployment
-        kubectl rollout status deployment/aws-example-octodex
+        kubectl rollout status deployment/eden-api-deployment
         # List Public IP of cluster
         kubectl get services -o wide
         kubectl get ingress
