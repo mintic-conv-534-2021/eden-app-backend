@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: eden-api-deployment
+  name: eden-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: eden-api-app
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: eden-api-app
+    spec:
+      containers:
+      - name: app
+        image: arquitectonicos3/eden-app-backend:0.1-SNAPSHOT
+        ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
