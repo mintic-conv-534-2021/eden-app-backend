@@ -70,6 +70,7 @@ public class ProductoServiceImpl implements ProductoService {
                         + request.getOrganizacionId() + " no existe en la BD"));
         producto.setOrganizacion(organizacion);
         producto.setCatalogoProducto(catalogoProducto);
+        producto.setActivo(true);
         productoRepository.save(producto);
     }
 
@@ -79,9 +80,35 @@ public class ProductoServiceImpl implements ProductoService {
         Producto producto = productoRepository.findById(request.getProductoId()).
                 orElseThrow(() -> new NotFoundException("Producto con id "
                         + request.getProductoId() + " no existe en la BD"));
-        ;
         merge(request, producto);
         productoRepository.save(producto);
+    }
+
+    @Override
+    public void changeProductoState(long productoId, Boolean estado) {
+        Producto producto = productoRepository.findById(productoId).
+                orElseThrow(() -> new NotFoundException("Producto con id "
+                        + productoId + " no existe en la BD"));
+        producto.setActivo(estado);
+        productoRepository.save(producto);
+    }
+
+    @Override
+    public void changeProductosByCatalogoState(long catalogoProductoId) {
+        List<Producto> productos = productoRepository.findAllByCatalogoProducto_IdCatalogoProducto(catalogoProductoId);
+        if (productos.isEmpty())
+            return;
+        productos.stream().forEach(producto -> producto.setActivo(false));
+        productoRepository.saveAll(productos);
+    }
+
+    @Override
+    public void changeProductosByOrganizacionState(long organizacionId) {
+        List<Producto> productos = productoRepository.findAllByCatalogoProducto_IdCatalogoProducto(organizacionId);
+        if (productos.isEmpty())
+            return;
+        productos.stream().forEach(producto -> producto.setActivo(false));
+        productoRepository.saveAll(productos);
     }
 
     public static <T> void merge(T source, T target) {

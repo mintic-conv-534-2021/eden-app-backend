@@ -19,4 +19,5 @@ public class CatalogoOrganizacionDTO {
     private String nombre;
     private String descripcion;
     private String urlImagen;
+    private Boolean activo;
 }

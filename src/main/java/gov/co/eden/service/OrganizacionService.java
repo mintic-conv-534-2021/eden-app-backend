@@ -21,4 +21,6 @@ public interface OrganizacionService {
     void updateOrganizacion(OrganizacionDTO request);
 
     Map<Long, List<Organizacion>> findOrganizationByCatalogoOrganization();
+
+    void changeOrganizationState(long organizacionId, Boolean estado);
 }

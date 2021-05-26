@@ -1,10 +1,10 @@
 package gov.co.eden.service.impl;
 
-import gov.co.eden.dto.catalogoproducto.CatalogoProductoDTO;
 import gov.co.eden.entity.CatalogoProducto;
 import gov.co.eden.exception.NotFoundException;
 import gov.co.eden.repository.CatalogoProductoRepository;
 import gov.co.eden.service.CatalogoProductoService;
+import gov.co.eden.service.ProductoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,8 @@ public class CatalogoProductoServiceImpl implements CatalogoProductoService {
 
     @Autowired
     private CatalogoProductoRepository catalogoProductoRepository;
+    @Autowired
+    private ProductoService productoService;
 
     @Override
     public CatalogoProducto getCatalogoById(long catalogoId) {
@@ -37,8 +39,19 @@ public class CatalogoProductoServiceImpl implements CatalogoProductoService {
     }
 
     @Override
-    public void createCatalogo(CatalogoProducto catalogoProducto) {
+    public void createCatalogo(List<CatalogoProducto> catalogoProducto) {
+        catalogoProducto.stream().forEach(catalogo -> catalogo.setActivo(true));
+        catalogoProductoRepository.saveAll(catalogoProducto);
+    }
+
+    @Override
+    public void changeCatalogoState(long catalogoId, Boolean estado) {
+        CatalogoProducto catalogoProducto = catalogoProductoRepository.findById(catalogoId).
+                orElseThrow(() -> new NotFoundException("Catalogo de productos con id "
+                        + catalogoId + " no existe en la BD"));
+        catalogoProducto.setActivo(estado);
         catalogoProductoRepository.save(catalogoProducto);
+        productoService.changeProductosByCatalogoState(catalogoProducto.getIdCatalogoProducto());
     }
 
     @Override

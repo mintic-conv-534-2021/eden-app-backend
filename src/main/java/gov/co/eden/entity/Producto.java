@@ -34,8 +34,8 @@ public class Producto {
     private double precio;
 
     @Basic
-    @Column(name = "ESTADO")
-    private boolean estado;
+    @Column(name = "ACTIVO")
+    private boolean activo;
 
     @Column(name = "IMAGEN")
     private String imagen;

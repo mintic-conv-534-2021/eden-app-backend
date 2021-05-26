@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class CatalogoProductoController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CatalogoProductoListResponse> getCatalogoProductoList() {
         List<CatalogoProducto> catalogoProductoList = catalogoProductoService.getAllCatalogo();
-        List<CatalogoProductoDTO> catalogoProductoDTOList = convertToCatalogoProducto(catalogoProductoList);
+        List<CatalogoProductoDTO> catalogoProductoDTOList = convertToCatalogoProductoDTO(catalogoProductoList);
         CatalogoProductoListResponse response = CatalogoProductoListResponse
                 .builder()
                 .catalogoProductoDTOList(catalogoProductoDTOList)
@@ -87,10 +88,25 @@ public class CatalogoProductoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createCatalogoProducto(@RequestBody CatalogoProductoDTO request) {
-        catalogoProductoService.createCatalogo(modelMapper.map(request, CatalogoProducto.class));
+    public ResponseEntity<Void> createCatalogoProducto(@RequestBody List<CatalogoProductoDTO> request) {
+        catalogoProductoService.createCatalogo(convertToCatalogoProductoEntity(request));
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .build();
+    }
+    
+    @Operation(summary = "Actualiza el estado del catalogo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Estado del catalogo actulizado satisfactoriamente"),
+            @ApiResponse(responseCode = "400", description = "Error en el request del estado del catalogo"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
+    @PostMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> changeStateCatalogo(@RequestParam(value = "organizacionId") Long catalogoId,
+                                                        @RequestParam(value = "activo") Boolean active) {
+        catalogoProductoService.changeCatalogoState(catalogoId,active);
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
                 .build();
     }
 
@@ -108,7 +124,7 @@ public class CatalogoProductoController {
                 .build();
     }
 
-    private List<CatalogoProductoDTO> convertToCatalogoProducto(List<CatalogoProducto> catalogoProductoList) {
+    private List<CatalogoProductoDTO> convertToCatalogoProductoDTO(List<CatalogoProducto> catalogoProductoList) {
         var responseList = new ArrayList<CatalogoProductoDTO>();
         for (var catalogo : catalogoProductoList) {
             var result = modelMapper.map(catalogo, CatalogoProductoDTO.class);
@@ -117,5 +133,12 @@ public class CatalogoProductoController {
         return responseList;
     }
 
-
+    private List<CatalogoProducto> convertToCatalogoProductoEntity(List<CatalogoProductoDTO> catalogoProductoDTOList) {
+        var entityList = new ArrayList<CatalogoProducto>();
+        for (var catalogo : catalogoProductoDTOList) {
+            var result = modelMapper.map(catalogo, CatalogoProducto.class);
+            entityList.add(result);
+        }
+        return entityList;
+    }
 }
