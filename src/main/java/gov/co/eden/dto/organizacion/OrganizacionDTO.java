@@ -32,6 +32,5 @@ public class OrganizacionDTO {
     private String urlRNT;
     private String urlRUT;
     private RedSocialDTO redSocialDTO;
-    private List<Long> productosIdList;
     private Long catalogoOrganizacionId;
 }

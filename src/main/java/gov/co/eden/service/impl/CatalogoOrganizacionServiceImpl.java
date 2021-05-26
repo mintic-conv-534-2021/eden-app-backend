@@ -37,6 +37,7 @@ public class CatalogoOrganizacionServiceImpl implements CatalogoOrganizacionServ
 
     @Override
     public void createCatalogoOrganizacion(CatalogoOrganizacion catalogoOrganizacion) {
+        catalogoOrganizacion.setActivo(true);
         catalogoOrganizacionRepository.save(catalogoOrganizacion);
     }
 

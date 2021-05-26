@@ -17,5 +17,6 @@ public class CatalogoProductoDTO {
 
     private Long catalogoProductoId;
     private String nombre;
+    private Boolean activo;
     private Long catalogoOganizacionId;
 }

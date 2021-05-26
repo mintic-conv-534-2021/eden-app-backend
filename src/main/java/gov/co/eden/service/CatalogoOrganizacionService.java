@@ -13,4 +13,5 @@ public interface CatalogoOrganizacionService {
     void createCatalogoOrganizacion(CatalogoOrganizacion catalogoOrganizacion);
 
     void updateCatalogoOrganizacion(CatalogoOrganizacion catalogoOrganizacion);
+
 }

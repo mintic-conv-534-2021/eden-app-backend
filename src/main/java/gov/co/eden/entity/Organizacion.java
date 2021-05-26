@@ -55,8 +55,8 @@ public class Organizacion {
     private String urlRut;
 
     @Basic
-    @Column(name = "activo")
-    private Boolean activo;
+    @Column(name = "ACTIVO")
+    private boolean activo;
 
     @Basic
     @Column(name = "EMAIL")
@@ -73,5 +73,12 @@ public class Organizacion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idCatalogoOrganizacion", referencedColumnName = "ID_CATALOGO_ORGANIZACION")
     private CatalogoOrganizacion catalogoOrganizacion;
+
+    @OneToMany(
+            mappedBy = "organizacion",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Producto> productoList;
 
 }

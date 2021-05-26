@@ -9,7 +9,9 @@ import gov.co.eden.entity.RedSocial;
 import gov.co.eden.exception.NotFoundException;
 import gov.co.eden.repository.CatalogoOrganizacionRepository;
 import gov.co.eden.repository.OrganizacionRepository;
+import gov.co.eden.service.CatalogoOrganizacionService;
 import gov.co.eden.service.OrganizacionService;
+import gov.co.eden.service.ProductoService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -30,6 +32,9 @@ public class OrganizacionServiceImpl implements OrganizacionService {
 
     @Autowired
     private CatalogoOrganizacionRepository catalogoOrganizacionRepository;
+
+    @Autowired
+    private ProductoService productoService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -67,6 +72,7 @@ public class OrganizacionServiceImpl implements OrganizacionService {
                         + request.getCatalogoOrganizacionId() + " no existe en la BD"));
         organizacion.setRedSocial(modelMapper.map(request.getRedSocialDTO(), RedSocial.class));
         organizacion.setCatalogoOrganizacion(catalogoOrganizacion);
+        organizacion.setActivo(true);
         organizacionRepository.save(organizacion);
     }
 
@@ -74,7 +80,7 @@ public class OrganizacionServiceImpl implements OrganizacionService {
     public void updateOrganizacion(OrganizacionDTO request) {
         Organizacion organizacion = organizacionRepository.findById(request.getOrganizacionId()).
                 orElseThrow(() -> new NotFoundException("Organizacion con id "
-                        + request.getOrganizacionId() + " no existe en la BD"));;
+                        + request.getOrganizacionId() + " no existe en la BD"));
         merge(request, organizacion);
         organizacionRepository.save(organizacion);
     }
@@ -83,6 +89,16 @@ public class OrganizacionServiceImpl implements OrganizacionService {
     public Map<Long, List<Organizacion>> findOrganizationByCatalogoOrganization(){
         return organizacionRepository.findAll().stream().
                 collect(Collectors.groupingBy(x -> x.getCatalogoOrganizacion().getIdCatalogoOrganizacion()));
+    }
+
+    @Override
+    public void changeOrganizationState(long organizacionId, Boolean estado) {
+        Organizacion organizacion = organizacionRepository.findById(organizacionId).
+                orElseThrow(() -> new NotFoundException("Organizacion con id "
+                        + organizacionId + " no existe en la BD"));
+        organizacion.setActivo(estado);
+        organizacionRepository.save(organizacion);
+        productoService.changeProductosByOrganizacionState(organizacion.getIdOrganizacion());
     }
 
     public static <T> void merge(T source, T target) {

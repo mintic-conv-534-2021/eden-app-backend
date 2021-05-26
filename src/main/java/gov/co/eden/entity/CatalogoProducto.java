@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "CATALOGO_PRODUCTO")
@@ -26,8 +27,19 @@ public class CatalogoProducto {
     @Column(name = "NOMBRE")
     private String nombre;
 
+    @Basic
+    @Column(name = "ACTIVO")
+    private boolean activo;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idCatalogoOrganizacion", referencedColumnName = "ID_CATALOGO_ORGANIZACION")
     private CatalogoOrganizacion catalogoOrganizacion;
+
+    @OneToMany(
+            mappedBy = "catalogoProducto",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Producto> productoList;
 
 }

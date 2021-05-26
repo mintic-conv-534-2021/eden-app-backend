@@ -134,6 +134,21 @@ public class ProductoController {
                 .build();
     }
 
+    @Operation(summary = "Actualiza el estado del producto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Estado del producto actulizado satisfactoriamente"),
+            @ApiResponse(responseCode = "400", description = "Error en el request del estado del producto"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
+    @PostMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> changeStateProducto(@RequestParam(value = "productoId") Long productoId,
+                                                    @RequestParam(value = "activo") Boolean active) {
+        productoService.changeProductoState(productoId,active);
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .build();
+    }
+
     private List<ProductoDTO> convertToProductos(List<Producto> productoList) {
         var responseList = new ArrayList<ProductoDTO>();
         for (var producto : productoList) {

@@ -10,7 +10,9 @@ public interface CatalogoProductoService {
 
     List<CatalogoProducto> getAllCatalogo();
 
-    void createCatalogo(CatalogoProducto catalogoProducto);
+    void createCatalogo(List<CatalogoProducto> catalogoProducto);
 
     void updateCatalogo(CatalogoProducto catalogoProducto);
+
+    void changeCatalogoState(long catalogoId, Boolean estado);
 }
