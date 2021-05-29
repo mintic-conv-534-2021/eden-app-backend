@@ -21,3 +21,14 @@ spec:
           - name: http
             containerPort: 8080
             protocol: TCP
+        env:
+          - name: DS_HOST
+            value: "Hello from the environment"
+          - name: DS_PORT
+            value: "Such a sweet sorrow"
+          - name: DS_NAME
+            value: "Such a sweet sorrow"
+          - name: DS_USERNAME
+            value: "Such a sweet sorrow"
+          - name: DS_PASSWORD
+            value: "Such a sweet sorrow"
