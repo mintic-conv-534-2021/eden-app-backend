@@ -23,9 +23,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,9 +90,10 @@ public class CatalogoOrganizacionController {
             @ApiResponse(responseCode = "400", description = "Error en el request de catalogo de la organizacion"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createCatalogoOrganizacion(@RequestBody CatalogoOrganizacionDTO request) {
-        catalogoOrganizacionService.createCatalogoOrganizacion(modelMapper.map(request, CatalogoOrganizacion.class));
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<Void> createCatalogoOrganizacion(@RequestPart("request")  CatalogoOrganizacionDTO request,
+                                                           @RequestPart("imagen") MultipartFile imagen) throws IOException {
+        catalogoOrganizacionService.createCatalogoOrganizacion(modelMapper.map(request, CatalogoOrganizacion.class),imagen);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();

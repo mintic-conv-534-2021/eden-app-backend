@@ -61,6 +61,26 @@ public class CatalogoProductoController {
                 .ok(response);
     }
 
+    @Operation(summary = "Obtiene el catalogo de producto de acuerdo al id del catalogo de organizacion")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Obtiene el catalogo de producto de acuerdo al id del catalogo de organizacion",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = CatalogoProductoResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
+    @GetMapping(value = "/catalogo-organizacion/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CatalogoProductoListResponse> getCatalogoProductoByCatalogoOrganizacion(@PathVariable("idCatalogoOrganizacion") long catalogoOrganizacionId) {
+        List<CatalogoProducto> catalogoProductoList = catalogoProductoService.getCatalogoByCatalogoOrganizacionId(catalogoOrganizacionId);
+        List<CatalogoProductoDTO> catalogoProductoDTOList = convertToCatalogoProductoDTO(catalogoProductoList);
+        CatalogoProductoListResponse response = CatalogoProductoListResponse
+                .builder()
+                .catalogoProductoDTOList(catalogoProductoDTOList)
+                .build();
+
+        return ResponseEntity
+                .ok(response);
+    }
+
     @Operation(summary = "Obtiene lista de catalogo de producto")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Obtiene lista de catalogo de producto",

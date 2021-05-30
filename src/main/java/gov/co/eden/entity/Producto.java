@@ -37,8 +37,8 @@ public class Producto {
     @Column(name = "ACTIVO")
     private boolean activo;
 
-    @Column(name = "IMAGEN")
-    private String imagen;
+    @Column(name = "URL_IMAGEN")
+    private String urlImagen;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idOrganizacion", referencedColumnName = "ID_ORGANIZACION")

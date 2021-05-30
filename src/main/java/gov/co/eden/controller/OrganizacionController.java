@@ -23,8 +23,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,9 +132,14 @@ public class OrganizacionController {
             @ApiResponse(responseCode = "400", description = "Error en el request de organizacion"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createOrganizacion(@RequestBody OrganizacionDTO request) {
-        organizacionService.createOrganizacion(request);
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<Void> createOrganizacion(@RequestPart("request") OrganizacionDTO request,
+                                                   @RequestPart("logo") MultipartFile logo,
+                                                   @RequestPart("banner") MultipartFile banner,
+                                                   @RequestPart("rm") MultipartFile rm,
+                                                   @RequestPart("rut") MultipartFile rut,
+                                                   @RequestPart("rnt") MultipartFile rnt) throws IOException {
+        organizacionService.createOrganizacion(request,logo,banner,rm,rut,rnt);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();

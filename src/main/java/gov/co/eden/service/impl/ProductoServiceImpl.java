@@ -1,5 +1,11 @@
 package gov.co.eden.service.impl;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import gov.co.eden.dto.producto.ProductoDTO;
 import gov.co.eden.entity.CatalogoProducto;
 import gov.co.eden.entity.Organizacion;
@@ -8,19 +14,27 @@ import gov.co.eden.exception.NotFoundException;
 import gov.co.eden.repository.CatalogoProductoRepository;
 import gov.co.eden.repository.OrganizacionRepository;
 import gov.co.eden.repository.ProductoRepository;
+import gov.co.eden.service.AWSS3Service;
 import gov.co.eden.service.ProductoService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class ProductoServiceImpl implements ProductoService {
+
+    @Autowired
+    private AWSS3Service aws3Service;
 
     @Autowired
     private ProductoRepository productoRepository;
@@ -33,6 +47,8 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    private final static String PRODUCTO_PATH = "producto";
 
     @Override
     public Producto getProductoById(long productoId) {
@@ -60,8 +76,9 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public void createProducto(ProductoDTO request) {
+    public void createProducto(ProductoDTO request, MultipartFile imagen) throws IOException {
         Producto producto = modelMapper.map(request, Producto.class);
+        producto.setUrlImagen(aws3Service.uploadFile(imagen,PRODUCTO_PATH));
         CatalogoProducto catalogoProducto = catalogoProductoRepository.findById(request.getCatalogoProductoId()).
                 orElseThrow(() -> new NotFoundException("Catalogo de producto con id "
                         + request.getCatalogoProductoId() + " no existe en la BD"));

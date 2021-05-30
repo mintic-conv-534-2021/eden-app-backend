@@ -1,10 +1,10 @@
 package gov.co.eden.service;
 
 import gov.co.eden.dto.organizacion.OrganizacionDTO;
-import gov.co.eden.dto.producto.ProductoDTO;
 import gov.co.eden.entity.Organizacion;
-import gov.co.eden.entity.Producto;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +16,8 @@ public interface OrganizacionService {
 
     List<Organizacion> getAllOrganizacion();
 
-    void createOrganizacion(OrganizacionDTO request);
+    void createOrganizacion(OrganizacionDTO request, MultipartFile logo, MultipartFile banner, MultipartFile rm,
+                            MultipartFile rut, MultipartFile rnt) throws IOException;
 
     void updateOrganizacion(OrganizacionDTO request);
 

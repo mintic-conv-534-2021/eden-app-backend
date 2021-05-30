@@ -30,6 +30,14 @@ public class CatalogoProductoServiceImpl implements CatalogoProductoService {
     }
 
     @Override
+    public List<CatalogoProducto> getCatalogoByCatalogoOrganizacionId(long catalogoOrganizacionId) {
+        List<CatalogoProducto> catalogo = catalogoProductoRepository.findAllByCatalogoOrganizacion_CatalogoOrganizacionId(catalogoOrganizacionId);
+        if (catalogo.isEmpty())
+            throw new NotFoundException("No catalogo de productos found on database for catalogo organizacion id: " + catalogoOrganizacionId);
+        return catalogo;
+    }
+
+    @Override
     public List<CatalogoProducto> getAllCatalogo() {
         List<CatalogoProducto> entities = catalogoProductoRepository.findAll();
         log.info("Found {} of modulo", entities.size());

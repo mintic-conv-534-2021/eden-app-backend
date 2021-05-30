@@ -20,7 +20,7 @@ public class CatalogoOrganizacion {
     @Column(name = "ID_CATALOGO_ORGANIZACION")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CATALOGO_ORGANIZACION_GENERATOR")
     @SequenceGenerator(name = "CATALOGO_ORGANIZACION_GENERATOR", sequenceName = "CATALOGO_ORGANIZACION_SEQUENCE", allocationSize = 1)
-    private long idCatalogoOrganizacion;
+    private long catalogoOrganizacionId;
 
     @Basic
     @Column(name = "NOMBRE")

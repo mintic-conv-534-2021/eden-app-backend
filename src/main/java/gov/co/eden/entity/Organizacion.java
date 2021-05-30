@@ -43,6 +43,18 @@ public class Organizacion {
     private String direccion;
 
     @Basic
+    @Column(name = "RUT")
+    private String rut;
+
+    @Basic
+    @Column(name = "RM")
+    private String rm;
+
+    @Basic
+    @Column(name = "RNT")
+    private String rnt;
+
+    @Basic
     @Column(name = "URL_RM")
     private String urlRM;
 
