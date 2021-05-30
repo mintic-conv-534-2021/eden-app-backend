@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: arquitectonicos3/eden-app-backend:0.1.1-SNAPSHOT
+        image: placeholder-image
         ports:
           - name: http
             containerPort: 8080
