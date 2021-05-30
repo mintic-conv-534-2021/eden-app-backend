@@ -8,6 +8,8 @@ public interface CatalogoProductoService {
 
     CatalogoProducto getCatalogoById(long catalogoId);
 
+    List<CatalogoProducto> getCatalogoByCatalogoOrganizacionId(long catalogoOrganizacionId);
+
     List<CatalogoProducto> getAllCatalogo();
 
     void createCatalogo(List<CatalogoProducto> catalogoProducto);
@@ -15,4 +17,6 @@ public interface CatalogoProductoService {
     void updateCatalogo(CatalogoProducto catalogoProducto);
 
     void changeCatalogoState(long catalogoId, Boolean estado);
+
+
 }

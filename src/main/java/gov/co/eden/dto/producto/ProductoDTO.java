@@ -19,7 +19,7 @@ public class ProductoDTO {
     private String descripcion;
     private Double precio;
     private Boolean activo;
-    private String imagen;
+    private String urlImagen;
     private Long organizacionId;
     private Long catalogoProductoId;
 }

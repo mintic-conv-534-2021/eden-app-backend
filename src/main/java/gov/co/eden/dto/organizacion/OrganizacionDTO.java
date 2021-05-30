@@ -25,6 +25,9 @@ public class OrganizacionDTO {
     private String telefono;
     private String direccion;
     private String email;
+    private String rm;
+    private String rut;
+    private String rnt;
     private Boolean activo;
     private String urlLogo;
     private String urlBanner;

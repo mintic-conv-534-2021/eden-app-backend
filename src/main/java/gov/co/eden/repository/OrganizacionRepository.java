@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface OrganizacionRepository extends JpaRepository<Organizacion, Long> {
 
-    List<Organizacion> findAllByCatalogoOrganizacion_IdCatalogoOrganizacion(Long idCatalogoOrganizacion);
+    List<Organizacion> findAllByCatalogoOrganizacion_CatalogoOrganizacionId(Long catalogoOrganizacionId);
 
 }
