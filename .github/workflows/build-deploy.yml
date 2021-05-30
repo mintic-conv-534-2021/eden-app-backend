@@ -69,9 +69,23 @@ jobs:
       env:
         K8S_YAML_DIR: ./manifests 
         IMAGE_NAME: ${{ steps.build-image.outputs.image }}
+        PROFILE: dev
+        DS_HOST: ${{ secrets.DS_HOST }}
+        DS_USERNAME: ${{ secrets.DS_USERNAME }}
+        DS_PASSWORD: ${{ secrets.DS_PASSWORD }}
+
       run: |
-        # Setup kustomize
+        # setup env vars
         cd $K8S_YAML_DIR
+        touch config.properties
+        cat <<EOF >config.properties
+        PROFILE=$PROFILE
+        DS_HOST=$DS_HOST
+        DS_USERNAME=$DS_USERNAME
+        DS_PASSWORD=$DS_PASSWORD
+        EOF
+
+        # Setup kustomize
         curl -s -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
         chmod u+x ./kustomize
         ./kustomize edit set image placeholder-image=$IMAGE_NAME

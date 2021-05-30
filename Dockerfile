@@ -8,7 +8,5 @@ COPY target/*.jar ./app.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.jar"]
-
-
-
+CMD ["sh", "-c", "echo ${MY_HOME}"]
+CMD ["java", "-jar", "-Dspring.profiles.active=${PROFILE}", "app.jar"]

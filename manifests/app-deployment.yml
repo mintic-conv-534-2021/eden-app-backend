@@ -16,19 +16,29 @@ spec:
     spec:
       containers:
       - name: app
-        image: arquitectonicos3/eden-app-backend:0.1-SNAPSHOT
+        image: arquitectonicos3/eden-app-backend:0.1.1-SNAPSHOT
         ports:
           - name: http
             containerPort: 8080
             protocol: TCP
         env:
+          - name: PROFILE
+            valueFrom:
+              configMapKeyRef:
+                name: eden-app-configmap
+                key: PROFILE
           - name: DS_HOST
-            value: "Hello from the environment"
-          - name: DS_PORT
-            value: "Such a sweet sorrow"
-          - name: DS_NAME
-            value: "Such a sweet sorrow"
+            valueFrom:
+              configMapKeyRef:
+                name: eden-app-configmap
+                key: DS_HOST
           - name: DS_USERNAME
-            value: "Such a sweet sorrow"
+            valueFrom:
+              configMapKeyRef:
+                name: eden-app-configmap
+                key: DS_USERNAME
           - name: DS_PASSWORD
-            value: "Such a sweet sorrow"
+            valueFrom:
+              configMapKeyRef:
+                name: eden-app-configmap
+                key: DS_PASSWORD
