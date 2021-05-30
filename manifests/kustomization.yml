@@ -5,6 +5,5 @@ resources:
 - app-service.yml
 - app-ingress.yml
 configMapGenerator:
-- files:
-  - config.properties
-  name: eden-app-configmap
+  - name: eden-app-configmap
+    env: config.properties
