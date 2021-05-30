@@ -42,3 +42,13 @@ spec:
               configMapKeyRef:
                 name: eden-app-configmap
                 key: DS_PASSWORD
+          - name: S3_ACCESS_KEY_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: eden-app-configmap
+                  key: S3_ACCESS_KEY_ID
+          - name: S3_SECRET_ACCESS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: eden-app-configmap
+                  key: S3_SECRET_ACCESS_KEY
