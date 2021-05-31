@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +105,7 @@ public class CatalogoProductoController {
 
     @Operation(summary = "Carga el catalogo productos")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Catalogo de productos creado satisfactoriamente"),
+            @ApiResponse(responseCode = "202", description = "Catalogo de productos creado satisfactoriamente"),
             @ApiResponse(responseCode = "400", description = "Error en el request de catalogo de la productos"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
@@ -148,6 +150,7 @@ public class CatalogoProductoController {
         var responseList = new ArrayList<CatalogoProductoDTO>();
         for (var catalogo : catalogoProductoList) {
             var result = modelMapper.map(catalogo, CatalogoProductoDTO.class);
+            result.setCatalogoOganizacionId(catalogo.getCatalogoOrganizacion().getCatalogoOrganizacionId());
             responseList.add(result);
         }
         return responseList;
@@ -157,6 +160,8 @@ public class CatalogoProductoController {
         var entityList = new ArrayList<CatalogoProducto>();
         for (var catalogo : catalogoProductoDTOList) {
             var result = modelMapper.map(catalogo, CatalogoProducto.class);
+            result.setCatalogoOrganizacion(CatalogoOrganizacion.builder().
+                    catalogoOrganizacionId(catalogo.getCatalogoOganizacionId()).build());
             entityList.add(result);
         }
         return entityList;

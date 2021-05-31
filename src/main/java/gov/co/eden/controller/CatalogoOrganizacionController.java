@@ -101,7 +101,7 @@ public class CatalogoOrganizacionController {
 
     @Operation(summary = "Actualiza el catalogo de la organizacion")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Catalogo de la organizacion actualizado satisfactoriamente"),
+            @ApiResponse(responseCode = "202", description = "Catalogo de la organizacion actualizado satisfactoriamente"),
             @ApiResponse(responseCode = "400", description = "Error en el request de catalogo de la organizacion"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
