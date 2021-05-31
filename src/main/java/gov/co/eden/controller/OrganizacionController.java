@@ -147,7 +147,7 @@ public class OrganizacionController {
 
     @Operation(summary = "Actualiza los datos de la organizacion")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Organizacion actualizada satisfactoriamente"),
+            @ApiResponse(responseCode = "202", description = "Organizacion actualizada satisfactoriamente"),
             @ApiResponse(responseCode = "400", description = "Error en el request de organizacion"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })

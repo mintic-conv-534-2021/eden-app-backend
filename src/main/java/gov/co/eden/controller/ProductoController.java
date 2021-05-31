@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -111,12 +112,12 @@ public class ProductoController {
 
     @Operation(summary = "Carga los datos del producto")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Producto creada satisfactoriamente"),
+            @ApiResponse(responseCode = "202", description = "Producto creada satisfactoriamente"),
             @ApiResponse(responseCode = "400", description = "Error en el request de producto"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createProducto(@RequestBody ProductoDTO request,@RequestParam("imagen") MultipartFile imagen) throws IOException {
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<Void> createProducto(@RequestPart ProductoDTO request, @RequestPart("imagen") MultipartFile imagen) throws IOException {
         productoService.createProducto(request,imagen);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
