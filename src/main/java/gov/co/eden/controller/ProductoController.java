@@ -144,7 +144,7 @@ public class ProductoController {
             @ApiResponse(responseCode = "400", description = "Error en el request del estado del producto"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PostMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> changeStateProducto(@RequestParam(value = "productoId") Long productoId,
                                                     @RequestParam(value = "activo") Boolean active) {
         productoService.changeProductoState(productoId,active);

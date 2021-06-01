@@ -165,7 +165,7 @@ public class OrganizacionController {
             @ApiResponse(responseCode = "400", description = "Error en el request del estado de la organizacion"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PostMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> changeStateOrganizacion(@RequestParam(value = "organizacionId") Long organizacionId,
                                                     @RequestParam(value = "activo") Boolean active) {
         organizacionService.changeOrganizationState(organizacionId,active);

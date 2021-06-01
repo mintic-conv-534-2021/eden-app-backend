@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +52,7 @@ public class CatalogoProductoController {
     public ResponseEntity<CatalogoProductoResponse> getCatalogoProducto(@PathVariable("id") long id) {
         CatalogoProducto catalogoProducto = catalogoProductoService.getCatalogoById(id);
         CatalogoProductoDTO catalogoProductoDTO = modelMapper.map(catalogoProducto, CatalogoProductoDTO.class);
+        catalogoProductoDTO.setCatalogoOganizacionId(catalogoProducto.getCatalogoOrganizacion().getCatalogoOrganizacionId());
         CatalogoProductoResponse response = CatalogoProductoResponse
                 .builder()
                 .catalogoProductoDTO(catalogoProductoDTO)
@@ -71,7 +70,7 @@ public class CatalogoProductoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping(value = "/catalogo-organizacion/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CatalogoProductoListResponse> getCatalogoProductoByCatalogoOrganizacion(@PathVariable("idCatalogoOrganizacion") long catalogoOrganizacionId) {
+    public ResponseEntity<CatalogoProductoListResponse> getCatalogoProductoByCatalogoOrganizacion(@PathVariable("id") long catalogoOrganizacionId) {
         List<CatalogoProducto> catalogoProductoList = catalogoProductoService.getCatalogoByCatalogoOrganizacionId(catalogoOrganizacionId);
         List<CatalogoProductoDTO> catalogoProductoDTOList = convertToCatalogoProductoDTO(catalogoProductoList);
         CatalogoProductoListResponse response = CatalogoProductoListResponse
@@ -116,17 +115,17 @@ public class CatalogoProductoController {
                 .status(HttpStatus.CREATED)
                 .build();
     }
-    
+
     @Operation(summary = "Actualiza el estado del catalogo")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Estado del catalogo actulizado satisfactoriamente"),
             @ApiResponse(responseCode = "400", description = "Error en el request del estado del catalogo"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PostMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> changeStateCatalogo(@RequestParam(value = "organizacionId") Long catalogoId,
-                                                        @RequestParam(value = "activo") Boolean active) {
-        catalogoProductoService.changeCatalogoState(catalogoId,active);
+    @PutMapping(value = "/activo", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> changeStateCatalogo(@RequestParam(value = "catalogoProductoId") Long catalogoProductoId,
+                                                    @RequestParam(value = "activo") Boolean active) {
+        catalogoProductoService.changeCatalogoState(catalogoProductoId, active);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();
