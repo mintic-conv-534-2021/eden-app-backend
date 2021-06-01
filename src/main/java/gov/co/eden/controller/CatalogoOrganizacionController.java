@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,9 +89,9 @@ public class CatalogoOrganizacionController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<Void> createCatalogoOrganizacion(@RequestPart("request")  CatalogoOrganizacionDTO request,
+    public ResponseEntity<Void> createCatalogoOrganizacion(@RequestPart("request") CatalogoOrganizacionDTO request,
                                                            @RequestPart("imagen") MultipartFile imagen) throws IOException {
-        catalogoOrganizacionService.createCatalogoOrganizacion(modelMapper.map(request, CatalogoOrganizacion.class),imagen);
+        catalogoOrganizacionService.createCatalogoOrganizacion(modelMapper.map(request, CatalogoOrganizacion.class), imagen);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();

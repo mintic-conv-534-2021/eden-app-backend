@@ -123,10 +123,10 @@ public class CatalogoProductoController {
             @ApiResponse(responseCode = "400", description = "Error en el request del estado del catalogo"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PostMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> changeStateCatalogo(@RequestParam(value = "organizacionId") Long catalogoId,
+    @PutMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> changeStateCatalogo(@RequestParam(value = "catalogoProductoId") Long catalogoProductoId,
                                                         @RequestParam(value = "activo") Boolean active) {
-        catalogoProductoService.changeCatalogoState(catalogoId,active);
+        catalogoProductoService.changeCatalogoState(catalogoProductoId,active);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();
