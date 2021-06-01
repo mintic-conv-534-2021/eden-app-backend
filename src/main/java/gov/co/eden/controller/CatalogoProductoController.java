@@ -52,6 +52,7 @@ public class CatalogoProductoController {
     public ResponseEntity<CatalogoProductoResponse> getCatalogoProducto(@PathVariable("id") long id) {
         CatalogoProducto catalogoProducto = catalogoProductoService.getCatalogoById(id);
         CatalogoProductoDTO catalogoProductoDTO = modelMapper.map(catalogoProducto, CatalogoProductoDTO.class);
+        catalogoProductoDTO.setCatalogoOganizacionId(catalogoProducto.getCatalogoOrganizacion().getCatalogoOrganizacionId());
         CatalogoProductoResponse response = CatalogoProductoResponse
                 .builder()
                 .catalogoProductoDTO(catalogoProductoDTO)
