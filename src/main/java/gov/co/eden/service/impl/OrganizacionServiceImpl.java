@@ -86,7 +86,7 @@ public class OrganizacionServiceImpl implements OrganizacionService {
         CatalogoOrganizacion catalogoOrganizacion = catalogoOrganizacionRepository.findById(request.getCatalogoOrganizacionId()).
                 orElseThrow(() -> new NotFoundException("Catalogo de organizacion con id "
                         + request.getCatalogoOrganizacionId() + " no existe en la BD"));
-        organizacion.setRedSocial(modelMapper.map(request.getRedSocialDTO(), RedSocial.class));
+        organizacion.setRedSocial(modelMapper.map(request.getRedSocial(), RedSocial.class));
         organizacion.setCatalogoOrganizacion(catalogoOrganizacion);
         organizacion.setActivo(true);
         organizacionRepository.save(organizacion);
