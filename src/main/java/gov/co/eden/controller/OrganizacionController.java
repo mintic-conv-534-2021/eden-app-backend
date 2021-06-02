@@ -152,8 +152,13 @@ public class OrganizacionController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateOrganizacion(@RequestBody OrganizacionDTO request) {
-        organizacionService.updateOrganizacion(request);
+    public ResponseEntity<Void> updateOrganizacion(@RequestPart("request") OrganizacionDTO request,
+                                                   @RequestPart("logo") MultipartFile logo,
+                                                   @RequestPart("banner") MultipartFile banner,
+                                                   @RequestPart("rm") MultipartFile rm,
+                                                   @RequestPart("rut") MultipartFile rut,
+                                                   @RequestPart("rnt") MultipartFile rnt) throws IOException {
+        organizacionService.updateOrganizacion(request,logo,banner,rm,rut,rnt);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();

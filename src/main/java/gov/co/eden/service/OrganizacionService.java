@@ -19,7 +19,8 @@ public interface OrganizacionService {
     void createOrganizacion(OrganizacionDTO request, MultipartFile logo, MultipartFile banner, MultipartFile rm,
                             MultipartFile rut, MultipartFile rnt) throws IOException;
 
-    void updateOrganizacion(OrganizacionDTO request);
+    void updateOrganizacion(OrganizacionDTO request, MultipartFile logo, MultipartFile banner, MultipartFile rm,
+                            MultipartFile rut, MultipartFile rnt) throws IOException;
 
     Map<Long, List<Organizacion>> findOrganizationByCatalogoOrganization();
 

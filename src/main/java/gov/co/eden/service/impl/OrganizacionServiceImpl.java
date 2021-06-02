@@ -93,11 +93,31 @@ public class OrganizacionServiceImpl implements OrganizacionService {
     }
 
     @Override
-    public void updateOrganizacion(OrganizacionDTO request) {
+    public void updateOrganizacion(OrganizacionDTO request, MultipartFile logo, MultipartFile banner, MultipartFile rm, MultipartFile rut, MultipartFile rnt) throws IOException {
         Organizacion organizacion = organizacionRepository.findById(request.getOrganizacionId()).
                 orElseThrow(() -> new NotFoundException("Organizacion con id "
                         + request.getOrganizacionId() + " no existe en la BD"));
         merge(request, organizacion);
+        if (logo != null) {
+            aws3Service.deleteObject(organizacion.getUrlLogo());
+            organizacion.setUrlLogo(aws3Service.uploadFile(logo, ORGANIZATION_PATH_LOGO));
+        }
+        if (banner != null) {
+            aws3Service.deleteObject(organizacion.getUrlBanner());
+            organizacion.setUrlBanner(aws3Service.uploadFile(banner, ORGANIZATION_PATH_BANNER));
+        }
+        if (rm != null) {
+            aws3Service.deleteObject(organizacion.getUrlRM());
+            organizacion.setUrlRM(aws3Service.uploadFile(rm, ORGANIZATION_PATH_RM));
+        }
+        if (rut != null) {
+            aws3Service.deleteObject(organizacion.getUrlRut());
+            organizacion.setUrlRut(aws3Service.uploadFile(rut, ORGANIZATION_PATH_RUT));
+        }
+        if(rnt != null) {
+            aws3Service.deleteObject(organizacion.getUrlRNT());
+            organizacion.setUrlRNT(aws3Service.uploadFile(rnt, ORGANIZATION_PATH_RNT));
+        }
         organizacionRepository.save(organizacion);
     }
 
@@ -119,7 +139,7 @@ public class OrganizacionServiceImpl implements OrganizacionService {
 
     public static <T> void merge(T source, T target) {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
         modelMapper.map(source, target);
     }
 

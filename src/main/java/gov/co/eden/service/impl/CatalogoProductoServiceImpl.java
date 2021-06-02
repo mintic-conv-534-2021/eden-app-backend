@@ -1,11 +1,15 @@
 package gov.co.eden.service.impl;
 
+import gov.co.eden.dto.catalogoproducto.CatalogoProductoDTO;
+import gov.co.eden.entity.CatalogoOrganizacion;
 import gov.co.eden.entity.CatalogoProducto;
 import gov.co.eden.exception.NotFoundException;
 import gov.co.eden.repository.CatalogoProductoRepository;
 import gov.co.eden.service.CatalogoProductoService;
 import gov.co.eden.service.ProductoService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +67,17 @@ public class CatalogoProductoServiceImpl implements CatalogoProductoService {
     }
 
     @Override
-    public void updateCatalogo(CatalogoProducto catalogoProducto) {
-        catalogoProductoRepository.save(catalogoProducto);
+    public void updateCatalogo(CatalogoProductoDTO catalogoProducto) {
+        CatalogoProducto catalogoProductoEntity = catalogoProductoRepository.findById(catalogoProducto.getCatalogoProductoId()).
+                orElseThrow(() -> new NotFoundException("No catalogo de producto found on database for id: " +
+                        catalogoProducto.getCatalogoProductoId()));
+        merge(catalogoProducto, catalogoProductoEntity);
+        catalogoProductoRepository.save(catalogoProductoEntity);
+    }
+
+    public static <T> void merge(T source, T target) {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.map(source, target);
     }
 }

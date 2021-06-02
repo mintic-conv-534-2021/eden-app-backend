@@ -130,9 +130,9 @@ public class ProductoController {
             @ApiResponse(responseCode = "400", description = "Error en el request de producto"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateProducto(@RequestBody ProductoDTO request) {
-        productoService.updateProducto(request);
+    @PutMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<Void> updateProducto(@RequestPart ProductoDTO request, @RequestPart("imagen") MultipartFile imagen) throws IOException {
+        productoService.updateProducto(request,imagen);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();

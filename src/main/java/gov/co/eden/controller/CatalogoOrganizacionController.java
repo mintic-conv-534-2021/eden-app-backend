@@ -103,9 +103,10 @@ public class CatalogoOrganizacionController {
             @ApiResponse(responseCode = "400", description = "Error en el request de catalogo de la organizacion"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateCatalogoOrganizacion(@RequestBody CatalogoOrganizacionDTO request) {
-        catalogoOrganizacionService.updateCatalogoOrganizacion(modelMapper.map(request, CatalogoOrganizacion.class));
+    @PutMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<Void> updateCatalogoOrganizacion(@RequestPart("request") CatalogoOrganizacionDTO request,
+                                                           @RequestPart("imagen") MultipartFile imagen) throws IOException {
+        catalogoOrganizacionService.updateCatalogoOrganizacion(request ,imagen);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();

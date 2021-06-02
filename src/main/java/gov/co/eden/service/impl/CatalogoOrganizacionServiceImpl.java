@@ -1,11 +1,14 @@
 package gov.co.eden.service.impl;
 
+import gov.co.eden.dto.catalogoorganizacion.CatalogoOrganizacionDTO;
 import gov.co.eden.entity.CatalogoOrganizacion;
 import gov.co.eden.exception.NotFoundException;
 import gov.co.eden.repository.CatalogoOrganizacionRepository;
 import gov.co.eden.service.AWSS3Service;
 import gov.co.eden.service.CatalogoOrganizacionService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,10 +30,10 @@ public class CatalogoOrganizacionServiceImpl implements CatalogoOrganizacionServ
     private final static String CATALOG_ORGANIZATION_PATH = "catalogo-organizacion";
 
     @Override
-    public CatalogoOrganizacion getCatalogoOrganizacionById(long moduloId) {
-        Optional<CatalogoOrganizacion> modulo = catalogoOrganizacionRepository.findById(moduloId);
+    public CatalogoOrganizacion getCatalogoOrganizacionById(long catalogoOrganizacionId) {
+        Optional<CatalogoOrganizacion> modulo = catalogoOrganizacionRepository.findById(catalogoOrganizacionId);
         if (!modulo.isPresent())
-            throw new NotFoundException("No catalogo de organizacion found on database for id: " + moduloId);
+            throw new NotFoundException("No catalogo de organizacion found on database for id: " + catalogoOrganizacionId);
         return modulo.get();
     }
 
@@ -51,9 +54,22 @@ public class CatalogoOrganizacionServiceImpl implements CatalogoOrganizacionServ
     }
 
     @Override
-    public void updateCatalogoOrganizacion(CatalogoOrganizacion catalogoOrganizacion) {
-        catalogoOrganizacionRepository.save(catalogoOrganizacion);
+    public void updateCatalogoOrganizacion(CatalogoOrganizacionDTO catalogoOrganizacion, MultipartFile imagen) throws IOException {
+        CatalogoOrganizacion catalogoOrganizacionEntity = catalogoOrganizacionRepository.findById(catalogoOrganizacion.getCatalogoOrganizacionId()).
+                orElseThrow(() -> new NotFoundException("No catalogo de organizacion found on database for id: " +
+                        catalogoOrganizacion.getCatalogoOrganizacionId()));
+        merge(catalogoOrganizacion, catalogoOrganizacionEntity);
+        if (imagen != null) {
+            awss3Service.deleteObject(catalogoOrganizacionEntity.getUrlImagen());
+            catalogoOrganizacionEntity.setUrlImagen(awss3Service.uploadFile(imagen, CATALOG_ORGANIZATION_PATH));
+        }
+        catalogoOrganizacionRepository.save(catalogoOrganizacionEntity);
     }
 
+    public static <T> void merge(T source, T target) {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.map(source, target);
+    }
 
 }

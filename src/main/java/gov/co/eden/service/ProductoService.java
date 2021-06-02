@@ -17,7 +17,7 @@ public interface ProductoService {
 
     void createProducto(ProductoDTO request, MultipartFile imagen) throws IOException;
 
-    void updateProducto(ProductoDTO request);
+    void updateProducto(ProductoDTO request, MultipartFile imagen) throws IOException;
 
     void changeProductoState(long productoId, Boolean estado);
 

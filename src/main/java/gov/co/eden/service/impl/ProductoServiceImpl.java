@@ -1,11 +1,5 @@
 package gov.co.eden.service.impl;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import gov.co.eden.dto.producto.ProductoDTO;
 import gov.co.eden.entity.CatalogoProducto;
 import gov.co.eden.entity.Organizacion;
@@ -20,11 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -92,12 +84,16 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public void updateProducto(ProductoDTO request) {
+    public void updateProducto(ProductoDTO request, MultipartFile imagen) throws IOException {
 
         Producto producto = productoRepository.findById(request.getProductoId()).
                 orElseThrow(() -> new NotFoundException("Producto con id "
                         + request.getProductoId() + " no existe en la BD"));
         merge(request, producto);
+        if (imagen != null) {
+            aws3Service.deleteObject(producto.getUrlImagen());
+            producto.setUrlImagen(aws3Service.uploadFile(imagen, PRODUCTO_PATH));
+        }
         productoRepository.save(producto);
     }
 
@@ -130,7 +126,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     public static <T> void merge(T source, T target) {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
         modelMapper.map(source, target);
     }
 

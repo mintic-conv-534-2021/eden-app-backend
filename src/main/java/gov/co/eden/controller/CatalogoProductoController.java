@@ -139,7 +139,7 @@ public class CatalogoProductoController {
     })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateCatalogoProducto(@RequestBody CatalogoProductoDTO request) {
-        catalogoProductoService.updateCatalogo(modelMapper.map(request, CatalogoProducto.class));
+        catalogoProductoService.updateCatalogo(request);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();
