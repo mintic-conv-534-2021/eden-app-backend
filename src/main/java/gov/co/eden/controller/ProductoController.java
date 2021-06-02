@@ -126,7 +126,7 @@ public class ProductoController {
 
     @Operation(summary = "Actualiza los datos del producto")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Producto actulizado satisfactoriamente"),
+            @ApiResponse(responseCode = "202", description = "Producto actulizado satisfactoriamente"),
             @ApiResponse(responseCode = "400", description = "Error en el request de producto"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
@@ -140,7 +140,7 @@ public class ProductoController {
 
     @Operation(summary = "Actualiza el estado del producto")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Estado del producto actulizado satisfactoriamente"),
+            @ApiResponse(responseCode = "202", description = "Estado del producto actulizado satisfactoriamente"),
             @ApiResponse(responseCode = "400", description = "Error en el request del estado del producto"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
