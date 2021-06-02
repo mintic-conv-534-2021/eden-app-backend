@@ -1,13 +1,8 @@
 package gov.co.eden.controller;
 
-import gov.co.eden.dto.catalogoproducto.CatalogoProductoListResponse;
-import gov.co.eden.dto.catalogoproducto.CatalogoProductoResponse;
-import gov.co.eden.dto.organizacion.OrganizacionDTO;
-import gov.co.eden.dto.organizacion.OrganizacionListResponse;
 import gov.co.eden.dto.producto.ProductoDTO;
 import gov.co.eden.dto.producto.ProductoListResponse;
 import gov.co.eden.dto.producto.ProductoResponse;
-import gov.co.eden.entity.Organizacion;
 import gov.co.eden.entity.Producto;
 import gov.co.eden.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,14 +20,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +111,7 @@ public class ProductoController {
     })
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<Void> createProducto(@RequestPart ProductoDTO request, @RequestPart("imagen") MultipartFile imagen) throws IOException {
-        productoService.createProducto(request,imagen);
+        productoService.createProducto(request, imagen);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
@@ -131,8 +124,8 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PutMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<Void> updateProducto(@RequestPart ProductoDTO request, @RequestPart("imagen") MultipartFile imagen) throws IOException {
-        productoService.updateProducto(request,imagen);
+    public ResponseEntity<Void> updateProducto(@RequestPart ProductoDTO request, @RequestPart(name = "imagen", required = false) MultipartFile imagen) throws IOException {
+        productoService.updateProducto(request, imagen);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();
@@ -144,10 +137,10 @@ public class ProductoController {
             @ApiResponse(responseCode = "400", description = "Error en el request del estado del producto"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PutMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/activo", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> changeStateProducto(@RequestParam(value = "productoId") Long productoId,
                                                     @RequestParam(value = "activo") Boolean active) {
-        productoService.changeProductoState(productoId,active);
+        productoService.changeProductoState(productoId, active);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();

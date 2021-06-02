@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -105,8 +104,8 @@ public class CatalogoOrganizacionController {
     })
     @PutMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<Void> updateCatalogoOrganizacion(@RequestPart("request") CatalogoOrganizacionDTO request,
-                                                           @RequestPart("imagen") MultipartFile imagen) throws IOException {
-        catalogoOrganizacionService.updateCatalogoOrganizacion(request ,imagen);
+                                                           @RequestPart(name = "imagen", required = false) MultipartFile imagen) throws IOException {
+        catalogoOrganizacionService.updateCatalogoOrganizacion(request, imagen);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();

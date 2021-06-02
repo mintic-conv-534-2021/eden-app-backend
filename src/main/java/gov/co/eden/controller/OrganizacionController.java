@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -92,7 +91,7 @@ public class OrganizacionController {
                             schema = @Schema(implementation = OrganizacionListResponse.class))}),
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
-    @GetMapping(value = "/catalogo-organizacion/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/catalogo-organizacion/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrganizacionListResponse> getOrganizacionListByCatalogoOrganizacionId
             (@PathVariable(value = "id") Long catalogoOrganizacionId) {
         List<Organizacion> catalogoList = organizacionService.getOrganizacionByCatalogoOrganizacionId(catalogoOrganizacionId);
@@ -139,7 +138,7 @@ public class OrganizacionController {
                                                    @RequestPart("rm") MultipartFile rm,
                                                    @RequestPart("rut") MultipartFile rut,
                                                    @RequestPart("rnt") MultipartFile rnt) throws IOException {
-        organizacionService.createOrganizacion(request,logo,banner,rm,rut,rnt);
+        organizacionService.createOrganizacion(request, logo, banner, rm, rut, rnt);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
@@ -153,12 +152,12 @@ public class OrganizacionController {
     })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrganizacion(@RequestPart("request") OrganizacionDTO request,
-                                                   @RequestPart("logo") MultipartFile logo,
-                                                   @RequestPart("banner") MultipartFile banner,
-                                                   @RequestPart("rm") MultipartFile rm,
-                                                   @RequestPart("rut") MultipartFile rut,
-                                                   @RequestPart("rnt") MultipartFile rnt) throws IOException {
-        organizacionService.updateOrganizacion(request,logo,banner,rm,rut,rnt);
+                                                   @RequestPart(name = "logo", required = false) MultipartFile logo,
+                                                   @RequestPart(name = "banner", required = false) MultipartFile banner,
+                                                   @RequestPart(name = "rm", required = false) MultipartFile rm,
+                                                   @RequestPart(name = "rut", required = false) MultipartFile rut,
+                                                   @RequestPart(name = "rnt", required = false) MultipartFile rnt) throws IOException {
+        organizacionService.updateOrganizacion(request, logo, banner, rm, rut, rnt);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();
@@ -170,10 +169,10 @@ public class OrganizacionController {
             @ApiResponse(responseCode = "400", description = "Error en el request del estado de la organizacion"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PutMapping(value = "/activo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/activo", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> changeStateOrganizacion(@RequestParam(value = "organizacionId") Long organizacionId,
-                                                    @RequestParam(value = "activo") Boolean active) {
-        organizacionService.changeOrganizationState(organizacionId,active);
+                                                        @RequestParam(value = "activo") Boolean active) {
+        organizacionService.changeOrganizationState(organizacionId, active);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .build();
