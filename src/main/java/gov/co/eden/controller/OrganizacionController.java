@@ -128,7 +128,7 @@ public class OrganizacionController {
 
     @Operation(summary = "Carga los datos de la organizacion")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Organizacion creada satisfactoriamente"),
+            @ApiResponse(responseCode = "202", description = "Organizacion creada satisfactoriamente"),
             @ApiResponse(responseCode = "400", description = "Error en el request de organizacion"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
@@ -166,7 +166,7 @@ public class OrganizacionController {
 
     @Operation(summary = "Actualiza el estado de la organizacion")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Estado de la organizacion actulizado satisfactoriamente"),
+            @ApiResponse(responseCode = "202", description = "Estado de la organizacion actulizado satisfactoriamente"),
             @ApiResponse(responseCode = "400", description = "Error en el request del estado de la organizacion"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
