@@ -3,6 +3,7 @@ package gov.co.eden.controller;
 import gov.co.eden.dto.organizacion.OrganizacionDTO;
 import gov.co.eden.dto.organizacion.OrganizacionListResponse;
 import gov.co.eden.dto.organizacion.OrganizacionResponse;
+import gov.co.eden.dto.producto.ProductoDTO;
 import gov.co.eden.entity.Organizacion;
 import gov.co.eden.service.OrganizacionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -55,6 +57,9 @@ public class OrganizacionController {
     public ResponseEntity<OrganizacionResponse> getOrganizacion(@PathVariable("id") long id) {
         Organizacion organizacion = organizacionService.getOrganizacionById(id);
         OrganizacionDTO organizacionDTO = modelMapper.map(organizacion, OrganizacionDTO.class);
+        organizacionDTO.setProductosByCatalogoProductoMap(organizacionDTO.getProductoList().stream().
+                collect(Collectors.groupingBy(ProductoDTO::getCatalogoProductoNombre)));
+        organizacionDTO.setProductoList(null);
         OrganizacionResponse response = OrganizacionResponse
                 .builder()
                 .organizacionDTO(organizacionDTO)
@@ -182,6 +187,7 @@ public class OrganizacionController {
         var responseList = new ArrayList<OrganizacionDTO>();
         for (var organizacion : organizacionList) {
             var result = modelMapper.map(organizacion, OrganizacionDTO.class);
+            result.setProductoList(null);
             responseList.add(result);
         }
         return responseList;

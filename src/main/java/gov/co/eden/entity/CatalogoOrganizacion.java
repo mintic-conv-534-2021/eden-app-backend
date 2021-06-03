@@ -26,7 +26,7 @@ public class CatalogoOrganizacion {
 
     @Basic
     @Column(name = "NOMBRE")
-    private String nombre;
+    private String catalogoOrganizacionNombre;
 
     @Basic
     @Column(name = "DESCRIPCION")

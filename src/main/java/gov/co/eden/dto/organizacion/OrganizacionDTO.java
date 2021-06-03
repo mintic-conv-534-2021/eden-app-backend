@@ -2,14 +2,14 @@ package gov.co.eden.dto.organizacion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import gov.co.eden.dto.producto.ProductoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -36,4 +36,6 @@ public class OrganizacionDTO {
     private String urlRUT;
     private RedSocialDTO redSocial;
     private Long catalogoOrganizacionId;
+    private List<ProductoDTO> productoList;
+    private Map<String, List<ProductoDTO>> productosByCatalogoProductoMap;
 }

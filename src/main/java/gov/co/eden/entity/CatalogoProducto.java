@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -27,7 +26,7 @@ public class CatalogoProducto {
 
     @Basic
     @Column(name = "NOMBRE")
-    private String nombre;
+    private String catalogoProductoNombre;
 
     @Basic
     @Column(name = "ACTIVO")

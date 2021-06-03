@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class CatalogoProductoDTO {
 
     private Long catalogoProductoId;
-    private String nombre;
+    private String catalogoProductoNombre;
     private Boolean activo;
     private Long catalogoOganizacionId;
 }

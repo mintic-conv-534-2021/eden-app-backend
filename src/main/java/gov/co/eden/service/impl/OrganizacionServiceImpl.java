@@ -50,10 +50,10 @@ public class OrganizacionServiceImpl implements OrganizacionService {
 
     @Override
     public Organizacion getOrganizacionById(long organizacionId) {
-        Optional<Organizacion> modulo = organizacionRepository.findById(organizacionId);
-        if (!modulo.isPresent())
+        Optional<Organizacion> organizacion = organizacionRepository.findById(organizacionId);
+        if (!organizacion.isPresent())
             throw new NotFoundException("No organizacion found on database for id: " + organizacionId);
-        return modulo.get();
+        return organizacion.get();
     }
 
     @Override

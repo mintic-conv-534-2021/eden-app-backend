@@ -22,4 +22,5 @@ public class ProductoDTO {
     private String urlImagen;
     private Long organizacionId;
     private Long catalogoProductoId;
+    private String catalogoProductoNombre;
 }
