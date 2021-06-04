@@ -117,7 +117,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public void changeProductosByOrganizacionState(long organizacionId) {
-        List<Producto> productos = productoRepository.findAllByCatalogoProducto_IdCatalogoProducto(organizacionId);
+        List<Producto> productos = productoRepository.findAllByOrganizacion_IdOrganizacion(organizacionId);
         if (productos.isEmpty())
             return;
         productos.stream().forEach(producto -> producto.setActivo(false));

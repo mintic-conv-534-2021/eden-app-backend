@@ -122,7 +122,7 @@ public class CatalogoProductoController {
             @ApiResponse(responseCode = "400", description = "Error en el request del estado del catalogo"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PutMapping(value = "/activo", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/activo")
     public ResponseEntity<Void> changeStateCatalogo(@RequestParam(value = "catalogoProductoId") Long catalogoProductoId,
                                                     @RequestParam(value = "activo") Boolean active) {
         catalogoProductoService.changeCatalogoState(catalogoProductoId, active);
