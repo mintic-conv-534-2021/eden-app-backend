@@ -1,7 +1,6 @@
 package gov.co.eden.service.impl;
 
 import gov.co.eden.dto.catalogoproducto.CatalogoProductoDTO;
-import gov.co.eden.entity.CatalogoOrganizacion;
 import gov.co.eden.entity.CatalogoProducto;
 import gov.co.eden.exception.NotFoundException;
 import gov.co.eden.repository.CatalogoProductoRepository;
@@ -42,8 +41,8 @@ public class CatalogoProductoServiceImpl implements CatalogoProductoService {
     }
 
     @Override
-    public List<CatalogoProducto> getAllCatalogo() {
-        List<CatalogoProducto> entities = catalogoProductoRepository.findAll();
+    public List<CatalogoProducto> getAllCatalogo(Boolean active) {
+        List<CatalogoProducto> entities = catalogoProductoRepository.findAllByActivo(active);
         log.info("Found {} of modulo", entities.size());
         if (entities.isEmpty())
             throw new NotFoundException("No catalogo de productos found on database");

@@ -11,7 +11,7 @@ public interface CatalogoProductoService {
 
     List<CatalogoProducto> getCatalogoByCatalogoOrganizacionId(long catalogoOrganizacionId);
 
-    List<CatalogoProducto> getAllCatalogo();
+    List<CatalogoProducto> getAllCatalogo(Boolean active);
 
     void createCatalogo(List<CatalogoProducto> catalogoProducto);
 

@@ -14,7 +14,7 @@ public interface OrganizacionService {
 
     List<Organizacion> getOrganizacionByCatalogoOrganizacionId(Long catalogoOrganziacionId);
 
-    List<Organizacion> getAllOrganizacion();
+    List<Organizacion> getAllOrganizacion(Boolean activo);
 
     void createOrganizacion(OrganizacionDTO request, MultipartFile logo, MultipartFile banner, MultipartFile rm,
                             MultipartFile rut, MultipartFile rnt) throws IOException;

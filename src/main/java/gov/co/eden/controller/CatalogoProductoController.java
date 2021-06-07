@@ -90,8 +90,8 @@ public class CatalogoProductoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CatalogoProductoListResponse> getCatalogoProductoList() {
-        List<CatalogoProducto> catalogoProductoList = catalogoProductoService.getAllCatalogo();
+    public ResponseEntity<CatalogoProductoListResponse> getCatalogoProductoList(@RequestParam(value = "activo") Boolean activo){
+        List<CatalogoProducto> catalogoProductoList = catalogoProductoService.getAllCatalogo(activo);
         List<CatalogoProductoDTO> catalogoProductoDTOList = convertToCatalogoProductoDTO(catalogoProductoList);
         CatalogoProductoListResponse response = CatalogoProductoListResponse
                 .builder()

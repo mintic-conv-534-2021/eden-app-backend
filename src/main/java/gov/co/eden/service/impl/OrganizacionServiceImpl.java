@@ -65,8 +65,8 @@ public class OrganizacionServiceImpl implements OrganizacionService {
     }
 
     @Override
-    public List<Organizacion> getAllOrganizacion() {
-        List<Organizacion> entities = organizacionRepository.findAll();
+    public List<Organizacion> getAllOrganizacion(Boolean activo) {
+        List<Organizacion> entities = organizacionRepository.findAllByActivo(activo);
         log.info("Found {} of modulo", entities.size());
         if (entities.isEmpty())
             throw new NotFoundException("No organizacion found on database");

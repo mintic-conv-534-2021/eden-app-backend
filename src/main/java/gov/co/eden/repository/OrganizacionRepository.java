@@ -9,4 +9,6 @@ public interface OrganizacionRepository extends JpaRepository<Organizacion, Long
 
     List<Organizacion> findAllByCatalogoOrganizacion_CatalogoOrganizacionId(Long catalogoOrganizacionId);
 
+    List<Organizacion> findAllByActivo(Boolean active);
+
 }

@@ -11,4 +11,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     List<Producto> findAllByOrganizacion_IdOrganizacion(Long organizacionId);
 
+    List<Producto> findAllByActivo(Boolean active);
+
 }
