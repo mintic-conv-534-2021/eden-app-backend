@@ -155,7 +155,7 @@ public class OrganizacionController {
             @ApiResponse(responseCode = "400", description = "Error en el request de organizacion"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<Void> updateOrganizacion(@RequestPart("request") OrganizacionDTO request,
                                                    @RequestPart(name = "logo", required = false) MultipartFile logo,
                                                    @RequestPart(name = "banner", required = false) MultipartFile banner,
