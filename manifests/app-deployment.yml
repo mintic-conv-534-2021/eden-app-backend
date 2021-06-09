@@ -4,6 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/name: eden-api-deployment
   name: eden-api-deployment
+  namespace: placeholder-namespace
 spec:
   replicas: 1
   selector:
@@ -42,6 +43,11 @@ spec:
                 configMapKeyRef:
                   name: eden-app-configmap
                   key: DS_PASSWORD
+            - name: S3_BUCKET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: eden-app-configmap
+                  key: S3_BUCKET_NAME
             - name: S3_ACCESS_KEY_ID
               valueFrom:
                 configMapKeyRef:

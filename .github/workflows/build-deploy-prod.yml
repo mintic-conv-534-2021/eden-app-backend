@@ -12,7 +12,7 @@
 on:
   push:
     branches:
-      - feature/devops
+      - main
 
 name: Despliegue en Amazon EKS
 
@@ -22,9 +22,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AWS_REGION: us-west-2
-      EKS_CLUSTER_NAME: eden-app-backend-poc
-      REPO_NAME: eden-app-repo-poc
+      AWS_REGION: us-east-2
+      EKS_CLUSTER_NAME: eden-app
+      REPO_NAME: eden-app-repo
 
     steps:
     - uses: actions/checkout@v2
@@ -69,10 +69,11 @@ jobs:
       env:
         K8S_YAML_DIR: ./manifests 
         IMAGE_NAME: ${{ steps.build-image.outputs.image }}
-        PROFILE: dev
-        DS_HOST: ${{ secrets.DS_HOST }}
+        PROFILE: prod
+        DS_HOST: ${{ secrets.DS_HOST_PROD }}
         DS_USERNAME: ${{ secrets.DS_USERNAME }}
         DS_PASSWORD: ${{ secrets.DS_PASSWORD }}
+        S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME_PROD }}
         S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
         S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
 
@@ -85,6 +86,7 @@ jobs:
         DS_HOST=$DS_HOST
         DS_USERNAME=$DS_USERNAME
         DS_PASSWORD=$DS_PASSWORD
+        S3_BUCKET_NAME=$S3_BUCKET_NAME
         S3_ACCESS_KEY_ID=$S3_ACCESS_KEY_ID
         S3_SECRET_ACCESS_KEY=$S3_SECRET_ACCESS_KEY
         EOF
@@ -92,10 +94,11 @@ jobs:
         # Setup kustomize
         curl -s -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
         chmod u+x ./kustomize
+        ./kustomize edit set namespace $PROFILE
         ./kustomize edit set image placeholder-image=$IMAGE_NAME
         ./kustomize build . | kubectl apply -f -
         # Verify deployment
-        kubectl rollout status deployment/eden-api-deployment
+        kubectl rollout status deployment/eden-api-deployment -n=$PROFILE
         # List Public IP of cluster
-        kubectl get services -o wide
-        kubectl get ingress
+        kubectl get services -n=$PROFILE -o wide
+        kubectl get ingress -n=$PROFILE
