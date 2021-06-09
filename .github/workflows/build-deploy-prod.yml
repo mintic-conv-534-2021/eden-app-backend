@@ -100,5 +100,5 @@ jobs:
         # Verify deployment
         kubectl rollout status deployment/eden-api-deployment
         # List Public IP of cluster
-        kubectl get services -o wide
-        kubectl get ingress
+        kubectl get services -n=$PROFILE -o wide
+        kubectl get ingress -n=$PROFILE
