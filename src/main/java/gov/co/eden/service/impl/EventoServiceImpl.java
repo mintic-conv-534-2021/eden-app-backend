@@ -41,8 +41,12 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public List<Evento> getAllEventos(Boolean activo) {
-        List<Evento> entities = eventoRepository.findAllByActivo(activo);
+    public List<Evento> getAllEventos(Boolean filtrarActivos) {
+        List<Evento> entities;
+        if(filtrarActivos)
+            entities  = eventoRepository.findAllByActivo(true);
+        else
+            entities  = eventoRepository.findAll();
         log.info("Found {} of evento", entities.size());
         if (entities.isEmpty())
             throw new NotFoundException("No eventos found on database");

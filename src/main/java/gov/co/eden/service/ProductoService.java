@@ -13,7 +13,7 @@ public interface ProductoService {
 
     List<Producto> getProductoByCatalogoProductoId(Long catalogoProductoId);
 
-    List<Producto> getAllProductos(Boolean activo);
+    List<Producto> getAllProductos(Boolean filtrarActivos);
 
     void createProducto(ProductoDTO request, MultipartFile imagen) throws IOException;
 

@@ -11,7 +11,7 @@ public interface EventoService {
 
     Evento getEventoById(long eventoId);
 
-    List<Evento> getAllEventos(Boolean activo);
+    List<Evento> getAllEventos(Boolean filtrarActivos);
 
     void createEvento(EventoDTO request, MultipartFile imagenWeb, MultipartFile imagenMovil) throws IOException;
 

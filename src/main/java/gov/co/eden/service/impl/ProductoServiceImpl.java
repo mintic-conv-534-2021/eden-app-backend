@@ -59,8 +59,12 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public List<Producto> getAllProductos(Boolean activo) {
-        List<Producto> entities = productoRepository.findAllByActivo(activo);
+    public List<Producto> getAllProductos(Boolean filtrarActivos) {
+        List<Producto> entities;
+        if(filtrarActivos)
+            entities = productoRepository.findAllByActivo(true);
+        else
+            entities = productoRepository.findAll();
         log.info("Found {} of modulo", entities.size());
         if (entities.isEmpty())
             throw new NotFoundException("No modules found on database");

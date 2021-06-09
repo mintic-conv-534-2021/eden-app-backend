@@ -70,8 +70,8 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProductoListResponse> getProductoList(@RequestParam(value = "activo") Boolean active) {
-        List<Producto> productoList = productoService.getAllProductos(active);
+    public ResponseEntity<ProductoListResponse> getProductoList(@RequestParam(value = "filtrar-activos") Boolean filtrarActivos) {
+        List<Producto> productoList = productoService.getAllProductos(filtrarActivos);
         List<ProductoDTO> productoDTOList = convertToProductos(productoList);
         ProductoListResponse response = ProductoListResponse
                 .builder()

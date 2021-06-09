@@ -77,8 +77,8 @@ public class OrganizacionController {
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrganizacionListResponse> getOrganizacionList(@RequestParam(value = "activo") Boolean activo) {
-        List<Organizacion> catalogoList = organizacionService.getAllOrganizacion(activo);
+    public ResponseEntity<OrganizacionListResponse> getOrganizacionList(@RequestParam(value = "filtrar-activos") Boolean filtrarActivos) {
+        List<Organizacion> catalogoList = organizacionService.getAllOrganizacion(filtrarActivos);
         List<OrganizacionDTO> catalogoDTOList = convertToOrganizacion(catalogoList);
         OrganizacionListResponse response = OrganizacionListResponse
                 .builder()

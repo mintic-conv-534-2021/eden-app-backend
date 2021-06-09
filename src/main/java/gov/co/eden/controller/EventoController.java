@@ -70,8 +70,8 @@ public class EventoController {
             @ApiResponse(responseCode = "500", description = "Error interno del sistema")
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EventoListResponse> getEventoList(@RequestParam(value = "activo") Boolean active) {
-        List<Evento> eventoList = eventoService.getAllEventos(active);
+    public ResponseEntity<EventoListResponse> getEventoList(@RequestParam(value = "filtrar-activos") Boolean filtrarActivos) {
+        List<Evento> eventoList = eventoService.getAllEventos(filtrarActivos);
         List<EventoDTO> eventoDTOList = convertToEventos(eventoList);
         EventoListResponse response = EventoListResponse
                 .builder()
@@ -90,8 +90,8 @@ public class EventoController {
     })
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<Void> createEvento(@RequestPart EventoDTO request,
-                                             @RequestPart("imagen") MultipartFile imagenWeb,
-                                             @RequestPart("imagen") MultipartFile imagenMovil) throws IOException {
+                                             @RequestPart("imagenWeb") MultipartFile imagenWeb,
+                                             @RequestPart("imagenMovil") MultipartFile imagenMovil) throws IOException {
         eventoService.createEvento(request, imagenWeb, imagenMovil);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -106,8 +106,8 @@ public class EventoController {
     })
     @PutMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<Void> updateEvento(@RequestPart EventoDTO request,
-                                             @RequestPart(name = "imagen", required = false) MultipartFile imagenWeb,
-                                             @RequestPart(name = "imagen", required = false) MultipartFile imagenMovil) throws IOException {
+                                             @RequestPart(name = "imagenWeb", required = false) MultipartFile imagenWeb,
+                                             @RequestPart(name = "imagenMovil", required = false) MultipartFile imagenMovil) throws IOException {
         eventoService.updateEvento(request, imagenWeb, imagenMovil);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)

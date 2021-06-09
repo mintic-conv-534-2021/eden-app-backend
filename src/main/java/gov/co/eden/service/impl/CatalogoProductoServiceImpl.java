@@ -41,8 +41,12 @@ public class CatalogoProductoServiceImpl implements CatalogoProductoService {
     }
 
     @Override
-    public List<CatalogoProducto> getAllCatalogo(Boolean active) {
-        List<CatalogoProducto> entities = catalogoProductoRepository.findAllByActivo(active);
+    public List<CatalogoProducto> getAllCatalogo(Boolean filtrarActivos) {
+        List<CatalogoProducto> entities;
+        if(filtrarActivos)
+            entities = catalogoProductoRepository.findAllByActivo(true);
+        else
+            entities = catalogoProductoRepository.findAll();
         log.info("Found {} of modulo", entities.size());
         if (entities.isEmpty())
             throw new NotFoundException("No catalogo de productos found on database");
