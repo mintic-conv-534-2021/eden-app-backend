@@ -22,9 +22,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AWS_REGION: us-west-2
-      EKS_CLUSTER_NAME: eden-app-backend-poc
-      REPO_NAME: eden-app-repo-poc
+      AWS_REGION: us-east-2
+      EKS_CLUSTER_NAME: eden-app-backend
+      REPO_NAME: eden-app-repo
 
     steps:
     - uses: actions/checkout@v2
