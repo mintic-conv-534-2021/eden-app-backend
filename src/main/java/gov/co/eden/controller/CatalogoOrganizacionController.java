@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,8 +70,8 @@ public class CatalogoOrganizacionController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CatalogoOrganizacionListResponse> getCatalogoOrganizacionList() {
-        List<CatalogoOrganizacion> catalogoOrganizacionList = catalogoOrganizacionService.getAllCatalogoOrganizacion();
+    public ResponseEntity<CatalogoOrganizacionListResponse> getCatalogoOrganizacionList(@RequestParam(value = "filtrar-activos") Boolean filtrarActivos) {
+        List<CatalogoOrganizacion> catalogoOrganizacionList = catalogoOrganizacionService.getAllCatalogoOrganizacion(filtrarActivos);
         List<CatalogoOrganizacionDTO> catalogoOrganizacionDTOList = convertToCatalogoOrganizacionDTO(catalogoOrganizacionList);
         CatalogoOrganizacionListResponse response = CatalogoOrganizacionListResponse
                 .builder()
@@ -110,6 +111,22 @@ public class CatalogoOrganizacionController {
                 .status(HttpStatus.ACCEPTED)
                 .build();
     }
+
+    @Operation(summary = "Actualiza el estado del catalogo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Estado del catalogo actulizado satisfactoriamente"),
+            @ApiResponse(responseCode = "400", description = "Error en el request del estado del catalogo"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
+    @PutMapping(value = "/activo")
+    public ResponseEntity<Void> changeStateCatalogo(@RequestParam(value = "catalogoOrganizacionId") Long catalogoOrganizacionId,
+                                                    @RequestParam(value = "activo") Boolean active) {
+        catalogoOrganizacionService.changeCatalogoState(catalogoOrganizacionId, active);
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .build();
+    }
+
 
     private List<CatalogoOrganizacionDTO> convertToCatalogoOrganizacionDTO(List<CatalogoOrganizacion> catalogoOrganizacionList) {
         var responseList = new ArrayList<CatalogoOrganizacionDTO>();

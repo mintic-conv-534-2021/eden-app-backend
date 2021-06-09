@@ -11,10 +11,11 @@ public interface CatalogoOrganizacionService {
 
     CatalogoOrganizacion getCatalogoOrganizacionById(long catalogoOrganizacionId);
 
-    List<CatalogoOrganizacion> getAllCatalogoOrganizacion();
+    List<CatalogoOrganizacion> getAllCatalogoOrganizacion(Boolean filtrarActivos);
 
     void createCatalogoOrganizacion(CatalogoOrganizacion catalogoOrganizacion, MultipartFile imagen) throws IOException;
 
     void updateCatalogoOrganizacion(CatalogoOrganizacionDTO catalogoOrganizacion, MultipartFile imagen) throws IOException;
 
+    void changeCatalogoState(Long catalogoOrganizacionId, Boolean estado);
 }

@@ -2,6 +2,7 @@ package gov.co.eden.service.impl;
 
 import gov.co.eden.dto.catalogoorganizacion.CatalogoOrganizacionDTO;
 import gov.co.eden.entity.CatalogoOrganizacion;
+import gov.co.eden.entity.CatalogoProducto;
 import gov.co.eden.exception.NotFoundException;
 import gov.co.eden.repository.CatalogoOrganizacionRepository;
 import gov.co.eden.service.AWSS3Service;
@@ -38,8 +39,12 @@ public class CatalogoOrganizacionServiceImpl implements CatalogoOrganizacionServ
     }
 
     @Override
-    public List<CatalogoOrganizacion> getAllCatalogoOrganizacion() {
-        List<CatalogoOrganizacion> entities = catalogoOrganizacionRepository.findAll();
+    public List<CatalogoOrganizacion> getAllCatalogoOrganizacion(Boolean filtrarActivos) {
+        List<CatalogoOrganizacion> entities;
+        if(filtrarActivos)
+            entities = catalogoOrganizacionRepository.findAllByActivo(true);
+        else
+            entities = catalogoOrganizacionRepository.findAll();
         log.info("Found {} of modulo", entities.size());
         if (entities.isEmpty())
             throw new NotFoundException("No catalogo de organizacion found on database");
@@ -64,6 +69,15 @@ public class CatalogoOrganizacionServiceImpl implements CatalogoOrganizacionServ
             catalogoOrganizacionEntity.setUrlImagen(awss3Service.uploadFile(imagen, CATALOG_ORGANIZATION_PATH));
         }
         catalogoOrganizacionRepository.save(catalogoOrganizacionEntity);
+    }
+
+    @Override
+    public void changeCatalogoState(Long catalogoOrganizacionId, Boolean estado) {
+        CatalogoOrganizacion catalogoOrganizacion = catalogoOrganizacionRepository.findById(catalogoOrganizacionId).
+                orElseThrow(() -> new NotFoundException("Catalogo organizacion con id "
+                        + catalogoOrganizacionId + " no existe en la BD"));
+        catalogoOrganizacion.setActivo(estado);
+        catalogoOrganizacionRepository.save(catalogoOrganizacion);
     }
 
     public static <T> void merge(T source, T target) {
