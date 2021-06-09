@@ -23,7 +23,7 @@ jobs:
 
     env:
       AWS_REGION: us-east-2
-      EKS_CLUSTER_NAME: eden-app-backend
+      EKS_CLUSTER_NAME: eden-app
       REPO_NAME: eden-app-repo
 
     steps:
