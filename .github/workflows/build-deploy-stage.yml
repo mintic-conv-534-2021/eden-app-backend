@@ -98,7 +98,7 @@ jobs:
         ./kustomize edit set image placeholder-image=$IMAGE_NAME
         ./kustomize build . | kubectl apply -f -
         # Verify deployment
-        kubectl rollout status deployment/eden-api-deployment
+        kubectl rollout status deployment/eden-api-deployment -n=$PROFILE
         # List Public IP of cluster
         kubectl get services -n=$PROFILE -o wide
         kubectl get ingress -n=$PROFILE
